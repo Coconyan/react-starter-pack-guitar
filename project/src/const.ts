@@ -4,3 +4,11 @@ export enum AppRoute {
   Root = '/',
   NotFound = '*'
 }
+
+export enum APIRoute {
+  Guitars = '/guitars',
+}
+
+export enum NameSpace {
+  data = 'DATA',
+}
