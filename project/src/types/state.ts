@@ -1,8 +1,9 @@
 import { store } from '../store';
-import { Guitars } from './guitar';
+import { Guitar, Guitars } from './guitar';
 
 export type Data = {
   guitars: Guitars,
+  currentGuitar: Guitar | null
   isDataLoaded: boolean,
 };
 

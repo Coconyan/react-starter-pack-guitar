@@ -4,6 +4,7 @@ import { Data } from '../../types/state';
 
 const initialState: Data = {
   guitars: [],
+  currentGuitar: null,
   isDataLoaded: false,
 };
 
@@ -15,7 +16,10 @@ export const data = createSlice({
       state.guitars = action.payload;
       state.isDataLoaded = true;
     },
+    loadCurrentGuitar: (state, action) => {
+      state.currentGuitar = action.payload;
+    },
   },
 });
 
-export const { loadGuitars } = data.actions;
+export const { loadGuitars, loadCurrentGuitar } = data.actions;

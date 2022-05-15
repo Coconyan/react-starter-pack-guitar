@@ -6,7 +6,7 @@ import {
   AppDispatch,
   State
 } from '../types/state';
-import { loadGuitars } from './data/data';
+import { loadCurrentGuitar, loadGuitars } from './data/data';
 
 export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
@@ -18,6 +18,24 @@ export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
     try {
       const { data } = await api.get<Guitars>(`${APIRoute.Guitars}?_limit=27`);
       dispatch(loadGuitars(data));
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      // todo errorHandle(error);
+    }
+  },
+);
+
+export const fetchCurrentGuitarAction = createAsyncThunk<void, number, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchCurrentGuitar',
+  async (id: number, { dispatch, extra: api }) => {
+    try {
+      const { data } = await api.get<Guitars>(`${APIRoute.Guitars}/${id}`);
+      dispatch(loadCurrentGuitar(data));
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
