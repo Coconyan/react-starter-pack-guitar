@@ -5,6 +5,7 @@ import {
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
 import CatalogPage from '../../pages/catalog-page/catalog-page';
+import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import { getDataLoadedStatus } from '../../store/data/selectors';
 
 function App(): JSX.Element {
@@ -21,11 +22,16 @@ function App(): JSX.Element {
       <Route
         path={AppRoute.Root}
         element={<CatalogPage />}
-      />
-      {/* <Route
+      >
+        <Route
+          path={`${AppRoute.Root}page_:pageId`}
+          element={<CatalogPage />}
+        />
+      </Route>
+      <Route
         path="*"
         element={<NotFoundPage />}
-      /> */}
+      />
     </Routes>
   );
 }

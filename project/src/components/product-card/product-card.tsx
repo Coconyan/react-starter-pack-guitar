@@ -7,7 +7,7 @@ type PropsType = {
 function ProductCard({ guitar }: PropsType): JSX.Element {
   return (
     <div className="product-card"><img src={guitar.previewImg} srcSet={`${guitar.previewImg} 2x`} width={75} height={190} alt={guitar.name} />
-      {/* todo Путь изображения??? */}
+      {/* todo Путь изображения??? srcSet */}
       <div className="product-card__info">
         <div className="rate product-card__rate">
           {[1, 2, 3, 4, 5].map((rate) => {

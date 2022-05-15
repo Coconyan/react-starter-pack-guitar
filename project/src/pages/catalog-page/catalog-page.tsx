@@ -1,11 +1,32 @@
+import {
+  useEffect,
+  useState
+} from 'react';
+import {
+  useNavigate,
+  useParams
+} from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
+import PaginationList from '../../components/pagination-list/pagination-list';
 import ProductCardList from '../../components/product-card-list/product-card-list';
+import {
+  AppRoute,
+  GUITARS_COUNT_PER_PAGE
+} from '../../const';
 import { useAppSelector } from '../../hooks';
 import { getGuitars } from '../../store/data/selectors';
 
 function CatalogPage(): JSX.Element {
   const guitars = useAppSelector(getGuitars);
+  const navigate = useNavigate();
+  const { pageId } = useParams();
+  const pageCount = Math.ceil(guitars.length / GUITARS_COUNT_PER_PAGE);
+  const [currentPage] = useState(pageId ? Number(pageId) - 1 : 0);
+
+  useEffect(() => {
+    (Number(pageId) > pageCount || (pageId && isNaN(Number(pageId)))) && navigate(AppRoute.NotFound, {replace: true});
+  });
 
   return (
     <div className="wrapper">
@@ -82,18 +103,9 @@ function CatalogPage(): JSX.Element {
                 <button className="catalog-sort__order-button catalog-sort__order-button--down" aria-label="По убыванию" />
               </div>
             </div>
-            <ProductCardList guitars={guitars.slice(0, 9)} />
+            <ProductCardList guitars={guitars.slice(currentPage * 9, currentPage * 9 + 9)} />
             <div className="pagination page-content__pagination">
-              <ul className="pagination__list">
-                <li className="pagination__page pagination__page--active"><a className="link pagination__page-link" href="#todoPagination">1</a>
-                </li>
-                <li className="pagination__page"><a className="link pagination__page-link" href="#todoPagination">2</a>
-                </li>
-                <li className="pagination__page"><a className="link pagination__page-link" href="#todoPagination">3</a>
-                </li>
-                <li className="pagination__page pagination__page--next" id="next"><a className="link pagination__page-link" href="#todoPagination">Далее</a>
-                </li>
-              </ul>
+              <PaginationList currentPage={currentPage} pageCount={pageCount} />
             </div>
           </div>
         </div>
