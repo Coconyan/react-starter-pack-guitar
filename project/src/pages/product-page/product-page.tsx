@@ -3,7 +3,7 @@ import {
   useEffect,
   useState
 } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
@@ -40,7 +40,10 @@ function ProductPage(): JSX.Element {
   const { id } = useParams();
   const [count, setCount] = useState(3);
   const [modal, setModal] = useState(false);
+  const location = useLocation();
+  const [descriptionTab, setDesctiptionTab] = useState(location.hash === '#description');
   const sortedCurrentGuitarComments: Comments = currentGuitarComments.slice();
+
   if (currentGuitarComments.length !== 0) {
     sortedCurrentGuitarComments.sort((commentPrev, commentNext) => dayjs(commentNext.createAt).unix() - dayjs(commentPrev.createAt).unix());
   }
@@ -89,9 +92,21 @@ function ProductPage(): JSX.Element {
                 <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{sortedCurrentGuitarComments.length}</p>
                 <p className="rate__count"></p>
               </div>
-              <div className="tabs"><a className="button button--medium tabs__button" href="#characteristics">Характеристики</a><a className="button button--black-border button--medium tabs__button" href="#description">Описание</a>
-                <div className="tabs__content" id="characteristics">
-                  <table className="tabs__table">
+              <div className="tabs">
+                <a
+                  className={descriptionTab ? 'button button--black-border button--medium tabs__button' : 'button button--medium tabs__button'}
+                  href={`${AppRoute.Product}/${id}/#characteristics`}
+                  onClick={() => setDesctiptionTab(false)}
+                >Характеристики
+                </a>
+                <a
+                  className={descriptionTab ? 'button button--medium tabs__button' : 'button button--black-border button--medium tabs__button'}
+                  href={`${AppRoute.Product}/${id}/#description`}
+                  onClick={() => setDesctiptionTab(true)}
+                >Описание
+                </a>
+                <div className="tabs__content" id={descriptionTab ? 'description' : 'characteristics'}>
+                  <table className={descriptionTab ? 'tabs__table hidden' : 'tabs__table'}>
                     <tbody>
                       <tr className="tabs__table-row">
                         <td className="tabs__title">Артикул:</td>
@@ -100,7 +115,6 @@ function ProductPage(): JSX.Element {
                       <tr className="tabs__table-row">
                         <td className="tabs__title">Тип:</td>
                         <td className="tabs__value">{convertToRussianGuitarType(currentGuitar.type)}</td>
-                        {/* TODO map for type */}
                       </tr>
                       <tr className="tabs__table-row">
                         <td className="tabs__title">Количество струн:</td>
@@ -108,8 +122,7 @@ function ProductPage(): JSX.Element {
                       </tr>
                     </tbody>
                   </table>
-                  {/* TODO tabs desc charact */}
-                  <p className="tabs__product-description hidden">{currentGuitar.description}</p>
+                  <p className={descriptionTab ? 'tabs__product-description' : 'tabs__product-description hidden'}>{currentGuitar.description}</p>
                 </div>
               </div>
             </div>
