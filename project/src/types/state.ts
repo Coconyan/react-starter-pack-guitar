@@ -1,9 +1,13 @@
 import { store } from '../store';
+import { Comments } from './comment';
 import { Guitar, Guitars } from './guitar';
 
 export type Data = {
   guitars: Guitars,
-  currentGuitar: Guitar | null
+  currentGuitar: Guitar | null,
+  currentGuitarComments: Comments,
+  guitarsComments: Comments[],
+  isCommentSent: boolean,
   isDataLoaded: boolean,
 };
 

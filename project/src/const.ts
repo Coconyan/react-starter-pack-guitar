@@ -2,11 +2,12 @@ export enum AppRoute {
   Cart = '/cart',
   Product = '/product',
   Root = '/',
-  NotFound = '*'
+  NotFound = '*',
 }
 
 export enum APIRoute {
   Guitars = '/guitars',
+  Comments = '/comments',
 }
 
 export enum NameSpace {
