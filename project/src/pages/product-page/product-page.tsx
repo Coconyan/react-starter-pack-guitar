@@ -146,7 +146,7 @@ function ProductPage(): JSX.Element {
                 </button>
               ) : ''}
             <a className="button button--up button--red-border button--big reviews__up-button" href={`${AppRoute.Product}/${id}#header`}>Наверх</a>
-            {/* todo Ссылка неактивна если не развернуты все элементы массива currentGuitarComments */}
+            {/* todo Ссылка неактивна если не развернуты все элементы массива currentGuitarComments  ПОПРАВИЛ CSS файл*/}
           </section>
         </div>
       </main>
