@@ -34,7 +34,6 @@ function ProductCard({ guitar }: PropsType): JSX.Element {
 
   return (
     <div className="product-card"><img src={guitar.previewImg} srcSet={`${guitar.previewImg}@2x.jpg 2x`} width={75} height={190} alt={guitar.name} />
-      {/* todo Путь изображения??? srcSet */}
       <div className="product-card__info">
         <div className="rate product-card__rate">
           <Rating rating={guitar.rating} />

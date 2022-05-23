@@ -35,9 +35,9 @@ function CatalogPage(): JSX.Element {
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <ul className="breadcrumbs page-content__breadcrumbs">
-            <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
+            <li className="breadcrumbs__item"><a className="link" href={AppRoute.Root}>Главная</a>
             </li>
-            <li className="breadcrumbs__item"><a className="link" href="todo#">Каталог</a>
+            <li className="breadcrumbs__item"><a className="link" href={AppRoute.Root}>Каталог</a>
             </li>
           </ul>
           <div className="catalog">

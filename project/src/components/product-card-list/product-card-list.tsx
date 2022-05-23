@@ -7,7 +7,7 @@ type PropsType = {
 
 function ProductCardList({ guitars }: PropsType): JSX.Element {
   return (
-    <div className="cards catalog__cards">
+    <div className="cards catalog__cards" data-testid="favorites-list">
       {guitars.map((guitar) => (
         <ProductCard
           key={guitar.id}

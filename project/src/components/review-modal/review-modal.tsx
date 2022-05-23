@@ -60,7 +60,7 @@ function ReviewModal({ guitarName, guitarId, setModal }: PropsType): JSX.Element
               </div>
               <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                 <div className="rate rate--reverse">
-                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" id="star-5" name="rate" type="radio" defaultValue={5} />
+                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" id="star-5" data-testid="star-5" name="rate" type="radio" defaultValue={5} />
                   <label className="rate__label" htmlFor="star-5" title="Отлично" />
                   <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" id="star-4" name="rate" type="radio" defaultValue={4} />
                   <label className="rate__label" htmlFor="star-4" title="Хорошо" />

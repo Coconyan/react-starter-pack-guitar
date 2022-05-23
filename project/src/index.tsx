@@ -16,7 +16,6 @@ ReactDOM.render(
     <Provider store={store}>
       <HistoryRouter history={browserHistory}>
         <ToastContainer />
-        {/* todo Toast container is hidden */}
         <App />
       </HistoryRouter>
     </Provider>

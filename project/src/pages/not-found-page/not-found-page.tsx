@@ -9,8 +9,8 @@ function NotFoundPage(): JSX.Element {
     <div className="wrapper">
       <Header />
       <main className="page-content">
-        <h1>404 Not found</h1>
-        <Link to={AppRoute.Root}> go home</Link>
+        <h1>404 Not Found</h1>
+        <Link to={AppRoute.Root}>go home</Link>
       </main>
       <Footer />
     </div>
