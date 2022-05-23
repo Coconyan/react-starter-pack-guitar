@@ -3,7 +3,10 @@ import {
   useEffect,
   useState
 } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import {
+  Link,
+  useLocation
+} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
@@ -146,7 +149,6 @@ function ProductPage(): JSX.Element {
                 </button>
               ) : ''}
             <a className="button button--up button--red-border button--big reviews__up-button" href={`${AppRoute.Product}/${id}#header`}>Наверх</a>
-            {/* todo Ссылка неактивна если не развернуты все элементы массива currentGuitarComments  ПОПРАВИЛ CSS файл*/}
           </section>
         </div>
       </main>

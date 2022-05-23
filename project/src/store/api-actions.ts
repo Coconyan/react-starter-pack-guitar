@@ -1,7 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { APIRoute } from '../const';
-import { CommentPost, Comments } from '../types/comment';
+import { errorHandle } from '../services/error-handle';
+import {
+  CommentPost,
+  Comments
+} from '../types/comment';
 import {
   Guitar,
   Guitars
@@ -10,7 +14,13 @@ import {
   AppDispatch,
   State
 } from '../types/state';
-import { loadCurrentGuitar, loadCurrentGuitarComments, loadGuitars, loadGuitarsComments, setCommentSend } from './data/data';
+import {
+  loadCurrentGuitar,
+  loadCurrentGuitarComments,
+  loadGuitars,
+  loadGuitarsComments,
+  setCommentSend
+} from './data/data';
 
 export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
@@ -23,9 +33,7 @@ export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
       const { data } = await api.get<Guitars>(`${APIRoute.Guitars}?_limit=27`);
       dispatch(loadGuitars(data));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-      // todo errorHandle(error);
+      errorHandle(error);
     }
   },
 );
@@ -41,9 +49,7 @@ export const fetchCurrentGuitarAction = createAsyncThunk<void, number, {
       const { data } = await api.get<Guitar>(`${APIRoute.Guitars}/${id}`);
       dispatch(loadCurrentGuitar(data));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-      // todo errorHandle(error);
+      errorHandle(error);
     }
   },
 );
@@ -59,9 +65,7 @@ export const fetchCurrentGuitarCommentsAction = createAsyncThunk<void, number, {
       const { data } = await api.get<Comments>(`${APIRoute.Guitars}/${id}${APIRoute.Comments}`);
       dispatch(loadCurrentGuitarComments(data));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-      // todo errorHandle(error);
+      errorHandle(error);
     }
   },
 );
@@ -77,9 +81,7 @@ export const fetchCurrentGuitarCommentsCardAction = createAsyncThunk<void, numbe
       const { data } = await api.get<Comments>(`${APIRoute.Guitars}/${id}${APIRoute.Comments}`);
       dispatch(loadGuitarsComments(data));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-      // todo errorHandle(error);
+      errorHandle(error);
     }
   },
 );
@@ -94,11 +96,8 @@ export const addNewCommentAction = createAsyncThunk<void, CommentPost, {
     try {
       await api.post<CommentPost>(APIRoute.Comments, { guitarId, userName, rating, advantage, disadvantage, comment });
       dispatch(setCommentSend(true));
-      // todo СДЕЛАТЬ ОТОБРАЖЕНИЕ КОММЕНТАРИЯ СРАЗУ ПОСЛЕ ЕГО ЗАГРУЗКИ
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-      // todo errorHandle(error);
+      errorHandle(error);
     }
   },
 );

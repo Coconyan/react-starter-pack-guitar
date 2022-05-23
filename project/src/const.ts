@@ -15,3 +15,8 @@ export enum NameSpace {
 }
 
 export const GUITARS_COUNT_PER_PAGE = 9;
+
+export enum HTTP_CODE {
+  BAD_REQUEST = 400,
+  NOT_FOUND = 404,
+}
