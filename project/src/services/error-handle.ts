@@ -18,6 +18,8 @@ export const errorHandle = (error: ErrorType): void => {
   if (response) {
     switch (response.status) {
       case HTTP_CODE.BAD_REQUEST:
+        toast.error(response.statusText);
+        break;
       case HTTP_CODE.NOT_FOUND:
         store.dispatch(redirectToRoute(AppRoute.NotFound));
         toast.error(response.statusText);

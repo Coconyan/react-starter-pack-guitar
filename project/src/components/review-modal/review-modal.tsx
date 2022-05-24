@@ -1,25 +1,38 @@
+// import { createFocusTrap } from 'focus-trap';
 import { FormEvent, useState } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { addNewCommentAction } from '../../store/api-actions';
 import { CommentPost } from '../../types/comment';
+import { existVerticalScroll, getBodyScrollTop, handleBodyLock } from '../../utils';
 
 type PropsType = {
   guitarName: string,
   guitarId: number,
   setModal: (arg0: boolean) => void,
+  modal: boolean,
 }
 
-function ReviewModal({ guitarName, guitarId, setModal }: PropsType): JSX.Element {
+function ReviewModal({ guitarName, guitarId, setModal, modal }: PropsType): JSX.Element {
   const dispatch = useAppDispatch();
   const [userName, setName] = useState('');
   const [rating, setRating] = useState('');
   const [advantage, setAdvantage] = useState('');
   const [disadvantage, setDisadvantage] = useState('');
   const [comment, setComment] = useState('');
+  const body = document.querySelector('body');
+  // const modalFocusTrap = createFocusTrap('.modal');
+
+  // modal && modalFocusTrap?.activate();
+  if (body && existVerticalScroll() && modal) {
+    body.dataset.scrollY = `${getBodyScrollTop()}`;
+    body.classList.add('body-lock');
+    body.style.top = `-${body.dataset.scrollY}px`;
+  }
 
   const onSubmit = (commentData: CommentPost) => {
     dispatch(addNewCommentAction(commentData));
     setModal(false);
+    handleBodyLock(body);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -35,14 +48,26 @@ function ReviewModal({ guitarName, guitarId, setModal }: PropsType): JSX.Element
         comment: comment,
       });
     }
+
+    setName('');
+    setRating('');
+    setAdvantage('');
+    setDisadvantage('');
+    setComment('');
+    event.currentTarget.reset();
+  };
+
+  const handleCloseModal = () => {
+    setModal(false);
+    handleBodyLock(body);
   };
 
   return (
-    <div className="modal is-active modal--review modal-for-ui-kit">
+    <div className={`modal ${modal ? 'is-active' : ''} modal--review modal-for-ui-kit`} tabIndex={-1}>
       <div className="modal__wrapper">
         <div
           className="modal__overlay"
-          onClick={() => setModal(false)}
+          onClick={() => handleCloseModal()}
           data-close-modal
         />
         <div className="modal__content">
@@ -88,7 +113,7 @@ function ReviewModal({ guitarName, guitarId, setModal }: PropsType): JSX.Element
           <button
             className="modal__close-btn button-cross"
             type="button" aria-label="Закрыть"
-            onClick={() => setModal(false)}
+            onClick={() => handleCloseModal()}
           ><span className="button-cross__icon" /><span className="modal__close-btn-interactive-area" />
           </button>
         </div>

@@ -33,7 +33,7 @@ describe('Component: ReviewModal', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewModal guitarId={guitarId} guitarName={guitarName} setModal={setModal} />
+          <ReviewModal guitarId={guitarId} guitarName={guitarName} setModal={setModal} modal />
         </HistoryRouter>
       </Provider>);
 

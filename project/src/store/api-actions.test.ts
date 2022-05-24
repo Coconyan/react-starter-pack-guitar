@@ -6,8 +6,8 @@ import { createAPI } from '../services/api';
 import { APIRoute } from '../const';
 import { State } from '../types/state';
 import { makeFakeGuitar } from '../mocks/fake-guitar';
-import { addNewCommentAction, fetchCurrentGuitarAction, fetchCurrentGuitarCommentsAction, fetchCurrentGuitarCommentsCardAction, fetchGuitarsAction } from './api-actions';
-import { loadCurrentGuitar, loadCurrentGuitarComments, loadGuitars, loadGuitarsComments, setCommentSend } from './data/data';
+import { addNewCommentAction, fetchCurrentGuitarAction, fetchCurrentGuitarCommentsAction, fetchGuitarsAction } from './api-actions';
+import { loadCurrentGuitar, loadCurrentGuitarComments, loadGuitars, setCommentSend } from './data/data';
 import { makeFakeComment } from '../mocks/fake-comment';
 
 describe('Async actions', () => {
@@ -64,21 +64,6 @@ describe('Async actions', () => {
     const actions = store.getActions().map(({type}) => type);
 
     expect(actions).toContain(loadCurrentGuitarComments.toString());
-  });
-
-  it('should dispatch Load Comments when GET /guitars/id/comments', async () => {
-    const mockComments = [makeFakeComment(), makeFakeComment()];
-    mockAPI
-      .onGet(`${APIRoute.Guitars}/1${APIRoute.Comments}`)
-      .reply(200, mockComments);
-
-    const store = mockStore();
-
-    await store.dispatch(fetchCurrentGuitarCommentsCardAction(1));
-
-    const actions = store.getActions().map(({type}) => type);
-
-    expect(actions).toContain(loadGuitarsComments.toString());
   });
 
   it('should dispatch setCommentSend when POST /comments', async () => {

@@ -32,6 +32,7 @@ import { Comments } from '../../types/comment';
 import {
   convertToRussianGuitarType,
   convertToRussianRating,
+  existVerticalScroll,
   isEscapeKey
 } from '../../utils';
 
@@ -46,6 +47,7 @@ function ProductPage(): JSX.Element {
   const location = useLocation();
   const [descriptionTab, setDesctiptionTab] = useState(location.hash === '#description');
   const sortedCurrentGuitarComments: Comments = currentGuitarComments.slice();
+  const body = document.querySelector('body');
 
   if (currentGuitarComments.length !== 0) {
     sortedCurrentGuitarComments.sort((commentPrev, commentNext) => dayjs(commentNext.createAt).unix() - dayjs(commentPrev.createAt).unix());
@@ -66,6 +68,11 @@ function ProductPage(): JSX.Element {
     if (isEscapeKey(event.key)) {
       setModal(false);
       document.removeEventListener('keydown', onEscKeydown);
+      body?.classList.remove('body-lock');
+      // modalFocusTrap.deactivate();
+      if (body && existVerticalScroll()) {
+        body?.dataset.scrollY && window.scrollTo(0, +body.dataset.scrollY);
+      }
     }
   };
 
@@ -86,7 +93,7 @@ function ProductPage(): JSX.Element {
             </li>
           </ul>
           <div className="product-container">
-            <img className="product-container__img" src={currentGuitar.previewImg} srcSet={`${currentGuitar.previewImg}@2x.jpg 2x`} width={90} height={235} alt={currentGuitar.name} />
+            <img className="product-container__img" src={currentGuitar.previewImg} srcSet={`${currentGuitar.previewImg.slice(0, -4)}@2x.jpg 2x`} width={90} height={235} alt={currentGuitar.name} />
             <div className="product-container__info-wrapper">
               <h2 className="product-container__title title title--big title--uppercase">{currentGuitar.name}</h2>
               <div className="rate product-container__rating">
@@ -98,13 +105,13 @@ function ProductPage(): JSX.Element {
               <div className="tabs">
                 <a
                   className={descriptionTab ? 'button button--black-border button--medium tabs__button' : 'button button--medium tabs__button'}
-                  href={`${AppRoute.Product}/${id}/#characteristics`}
+                  href={`${AppRoute.Product}/${id}#characteristics`}
                   onClick={() => setDesctiptionTab(false)}
                 >Характеристики
                 </a>
                 <a
                   className={descriptionTab ? 'button button--medium tabs__button' : 'button button--black-border button--medium tabs__button'}
-                  href={`${AppRoute.Product}/${id}/#description`}
+                  href={`${AppRoute.Product}/${id}#description`}
                   onClick={() => setDesctiptionTab(true)}
                 >Описание
                 </a>
@@ -137,7 +144,7 @@ function ProductPage(): JSX.Element {
           <section className="reviews">
             <h3 className="reviews__title title title--bigger">Отзывы</h3>
             <button className="button button--red-border button--big reviews__sumbit-button" onClick={() => setModal(true)}>Оставить отзыв</button>
-            {modal ? <ReviewModal guitarName={currentGuitar.name} guitarId={currentGuitar.id} setModal={setModal} /> : ''}
+            {<ReviewModal guitarName={currentGuitar.name} guitarId={currentGuitar.id} setModal={setModal} modal={modal} />}
             {commentSendStatus ? <ReviewModalSuccess guitarId={currentGuitar.id} /> : ''}
             <ReviewsList reviews={sortedCurrentGuitarComments.slice(0, count)} />
             {count < sortedCurrentGuitarComments.length

@@ -103,7 +103,7 @@ function CatalogPage(): JSX.Element {
                 <button className="catalog-sort__order-button catalog-sort__order-button--down" aria-label="По убыванию" />
               </div>
             </div>
-            <ProductCardList guitars={guitars.slice(currentPage * 9, currentPage * 9 + 9)} />
+            <ProductCardList guitars={guitars.slice(currentPage * GUITARS_COUNT_PER_PAGE, currentPage * GUITARS_COUNT_PER_PAGE + GUITARS_COUNT_PER_PAGE)} />
             <div className="pagination page-content__pagination">
               <PaginationList currentPage={currentPage} pageCount={pageCount} />
             </div>

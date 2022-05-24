@@ -18,7 +18,6 @@ import {
   loadCurrentGuitar,
   loadCurrentGuitarComments,
   loadGuitars,
-  loadGuitarsComments,
   setCommentSend
 } from './data/data';
 
@@ -30,7 +29,7 @@ export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
   'data/fetchGuitars',
   async (_arg, { dispatch, extra: api }) => {
     try {
-      const { data } = await api.get<Guitars>(`${APIRoute.Guitars}?_limit=27`);
+      const { data } = await api.get<Guitars>(`${APIRoute.Guitars}?_limit=27&_embed=comments`);
       dispatch(loadGuitars(data));
     } catch (error) {
       errorHandle(error);
@@ -70,21 +69,22 @@ export const fetchCurrentGuitarCommentsAction = createAsyncThunk<void, number, {
   },
 );
 
-export const fetchCurrentGuitarCommentsCardAction = createAsyncThunk<void, number, {
-  dispatch: AppDispatch,
-  state: State,
-  extra: AxiosInstance
-}>(
-  'data/fetchCurrentGuitarCommentsCard',
-  async (id: number, { dispatch, extra: api }) => {
-    try {
-      const { data } = await api.get<Comments>(`${APIRoute.Guitars}/${id}${APIRoute.Comments}`);
-      dispatch(loadGuitarsComments(data));
-    } catch (error) {
-      errorHandle(error);
-    }
-  },
-);
+// export const fetchCurrentGuitarCommentsCardAction = createAsyncThunk<void, number, {
+//   dispatch: AppDispatch,
+//   state: State,
+//   extra: AxiosInstance
+// }>(
+//   'data/fetchCurrentGuitarCommentsCard',
+//   async (page: number, { dispatch, extra: api }) => {
+//     try {
+//       const { data } = await api.get<Comments>(`${APIRoute.Guitars}?_start=${page * GUITARS_COUNT_PER_PAGE}&_end=${page * GUITARS_COUNT_PER_PAGE + GUITARS_COUNT_PER_PAGE}&_embed=comments`);
+//       dispatch(setGuitarsComments(data));
+//     } catch (error) {
+//       errorHandle(error);
+//     }
+//   },
+// );
+// todo delete all this comments
 
 export const addNewCommentAction = createAsyncThunk<void, CommentPost, {
   dispatch: AppDispatch,

@@ -5,7 +5,7 @@ import {
 import { fetchCurrentGuitarCommentsAction } from '../../store/api-actions';
 import { setCommentSend } from '../../store/data/data';
 import { getCommentSendStatus } from '../../store/data/selectors';
-import { isEscapeKey } from '../../utils';
+import { existVerticalScroll, getBodyScrollTop, handleBodyLock, isEscapeKey } from '../../utils';
 
 type PropsType = {
   guitarId: number;
@@ -14,16 +14,25 @@ type PropsType = {
 function ReviewModalSuccess({ guitarId }: PropsType): JSX.Element {
   const dispatch = useAppDispatch();
   const commentSendStatus = useAppSelector(getCommentSendStatus);
+  const body = document.querySelector('body');
+
+  if (body && existVerticalScroll()) {
+    body.dataset.scrollY = `${getBodyScrollTop()}`;
+    body.classList.add('body-lock');
+    body.style.top = `-${body.dataset.scrollY}px`;
+  }
 
   const handleModalSuccessClose = () => {
     dispatch(setCommentSend(false));
     dispatch(fetchCurrentGuitarCommentsAction(guitarId));
+    handleBodyLock(body);
   };
 
   const onEscKeydown = (event: { key?: string; }) => {
     if (isEscapeKey(event.key)) {
       handleModalSuccessClose();
       document.removeEventListener('keydown', onEscKeydown);
+      handleBodyLock(body);
     }
   };
 
@@ -32,7 +41,7 @@ function ReviewModalSuccess({ guitarId }: PropsType): JSX.Element {
   return (
     <div className="modal is-active modal--success modal-for-ui-kit">
       <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal />
+        <div className="modal__overlay" data-close-modal onClick={() => handleModalSuccessClose()} />
         <div className="modal__content">
           <svg className="modal__icon" width={26} height={20} aria-hidden="true">
             <use xlinkHref="#icon-success" />

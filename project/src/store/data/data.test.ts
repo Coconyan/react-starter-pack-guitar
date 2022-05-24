@@ -2,8 +2,6 @@ import { makeFakeComment } from '../../mocks/fake-comment';
 import { makeFakeGuitar } from '../../mocks/fake-guitar';
 import {
   loadCurrentGuitarComments,
-  loadGuitarsComments,
-  setGuitarsComments,
   setCommentSend,
   loadCurrentGuitar,
   loadGuitars,
@@ -64,30 +62,6 @@ describe('Reducer: data', () => {
         guitars: [],
         currentGuitar: null,
         currentGuitarComments: comments,
-        guitarsComments: [],
-        isCommentSent: false,
-        isDataLoaded: false,
-      });
-  });
-
-  it('should update guitar comments by load guitar comments', () => {
-    expect(data.reducer(state, loadGuitarsComments(comments)))
-      .toEqual({
-        guitars: [],
-        currentGuitar: null,
-        currentGuitarComments: [],
-        guitarsComments: [comments],
-        isCommentSent: false,
-        isDataLoaded: false,
-      });
-  });
-
-  it('should update guitar comments by set guitar comments', () => {
-    expect(data.reducer(state, setGuitarsComments([])))
-      .toEqual({
-        guitars: [],
-        currentGuitar: null,
-        currentGuitarComments: [],
         guitarsComments: [],
         isCommentSent: false,
         isDataLoaded: false,
