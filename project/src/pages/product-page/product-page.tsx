@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { createFocusTrap } from 'focus-trap';
 import {
   useEffect,
   useState
@@ -24,22 +25,18 @@ import {
   fetchCurrentGuitarCommentsAction
 } from '../../store/api-actions';
 import {
-  getCommentSendStatus,
   getCurrentGuitar,
   getCurrentGuitarComments
 } from '../../store/data/selectors';
 import { Comments } from '../../types/comment';
 import {
   convertToRussianGuitarType,
-  convertToRussianRating,
-  existVerticalScroll,
-  isEscapeKey
+  convertToRussianRating
 } from '../../utils';
 
 function ProductPage(): JSX.Element {
   const currentGuitar = useAppSelector(getCurrentGuitar);
   const currentGuitarComments = useAppSelector(getCurrentGuitarComments);
-  const commentSendStatus = useAppSelector(getCommentSendStatus);
   const dispatch = useAppDispatch();
   const { id } = useParams();
   const [count, setCount] = useState(3);
@@ -47,7 +44,8 @@ function ProductPage(): JSX.Element {
   const location = useLocation();
   const [descriptionTab, setDesctiptionTab] = useState(location.hash === '#description');
   const sortedCurrentGuitarComments: Comments = currentGuitarComments.slice();
-  const body = document.querySelector('body');
+  const modalFocusTrap = createFocusTrap('.modal');
+  const modalFocusSuccessTrap = createFocusTrap('.modal--success');
 
   if (currentGuitarComments.length !== 0) {
     sortedCurrentGuitarComments.sort((commentPrev, commentNext) => dayjs(commentNext.createAt).unix() - dayjs(commentPrev.createAt).unix());
@@ -64,20 +62,6 @@ function ProductPage(): JSX.Element {
     return <h1>Loading...</h1>;
   }
 
-  const onEscKeydown = (event: { key?: string; }) => {
-    if (isEscapeKey(event.key)) {
-      setModal(false);
-      document.removeEventListener('keydown', onEscKeydown);
-      body?.classList.remove('body-lock');
-      // modalFocusTrap.deactivate();
-      if (body && existVerticalScroll()) {
-        body?.dataset.scrollY && window.scrollTo(0, +body.dataset.scrollY);
-      }
-    }
-  };
-
-  modal && document.addEventListener('keydown', onEscKeydown);
-
   return (
     <div className="wrapper">
       <Header />
@@ -87,9 +71,9 @@ function ProductPage(): JSX.Element {
           <ul className="breadcrumbs page-content__breadcrumbs">
             <li className="breadcrumbs__item"><Link className="link" to={AppRoute.Root}>Главная</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link" href={AppRoute.Root}>Каталог</a>
+            <li className="breadcrumbs__item"><Link className="link" to={AppRoute.Root}>Каталог</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link" href={`${AppRoute.Product}/${id}`}>{currentGuitar.name}</a>
+            <li className="breadcrumbs__item"><Link className="link" to={`${AppRoute.Product}/${id}`}>{currentGuitar.name}</Link>
             </li>
           </ul>
           <div className="product-container">
@@ -103,20 +87,20 @@ function ProductPage(): JSX.Element {
                 <p className="rate__count"></p>
               </div>
               <div className="tabs">
-                <a
+                <Link
                   className={descriptionTab ? 'button button--black-border button--medium tabs__button' : 'button button--medium tabs__button'}
-                  href={`${AppRoute.Product}/${id}#characteristics`}
+                  to={`${AppRoute.Product}/${id}#characteristics`}
                   onClick={() => setDesctiptionTab(false)}
                 >Характеристики
-                </a>
-                <a
+                </Link>
+                <Link
                   className={descriptionTab ? 'button button--medium tabs__button' : 'button button--black-border button--medium tabs__button'}
-                  href={`${AppRoute.Product}/${id}#description`}
+                  to={`${AppRoute.Product}/${id}#description`}
                   onClick={() => setDesctiptionTab(true)}
                 >Описание
-                </a>
+                </Link>
                 <div className="tabs__content" id={descriptionTab ? 'description' : 'characteristics'}>
-                  <table className={descriptionTab ? 'tabs__table hidden' : 'tabs__table'}>
+                  <table className={`tabs__table ${descriptionTab ? 'hidden' : ''}`}>
                     <tbody>
                       <tr className="tabs__table-row">
                         <td className="tabs__title">Артикул:</td>
@@ -132,7 +116,7 @@ function ProductPage(): JSX.Element {
                       </tr>
                     </tbody>
                   </table>
-                  <p className={descriptionTab ? 'tabs__product-description' : 'tabs__product-description hidden'}>{currentGuitar.description}</p>
+                  <p className={`tabs__product-description ${descriptionTab ? '' : 'hidden'}`}>{currentGuitar.description}</p>
                 </div>
               </div>
             </div>
@@ -144,8 +128,8 @@ function ProductPage(): JSX.Element {
           <section className="reviews">
             <h3 className="reviews__title title title--bigger">Отзывы</h3>
             <button className="button button--red-border button--big reviews__sumbit-button" onClick={() => setModal(true)}>Оставить отзыв</button>
-            {<ReviewModal guitarName={currentGuitar.name} guitarId={currentGuitar.id} setModal={setModal} modal={modal} />}
-            {commentSendStatus ? <ReviewModalSuccess guitarId={currentGuitar.id} /> : ''}
+            {<ReviewModal guitarName={currentGuitar.name} guitarId={currentGuitar.id} setModal={setModal} modal={modal} modalFocusTrap={modalFocusTrap} />}
+            {<ReviewModalSuccess guitarId={currentGuitar.id} modalFocusTrap={modalFocusSuccessTrap} />}
             <ReviewsList reviews={sortedCurrentGuitarComments.slice(0, count)} />
             {count < sortedCurrentGuitarComments.length
               ? (

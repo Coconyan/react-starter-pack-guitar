@@ -6,7 +6,6 @@ const initialState: Data = {
   guitars: [],
   currentGuitar: null,
   currentGuitarComments: [],
-  // guitarsComments: [], todo
   isCommentSent: false,
   isDataLoaded: false,
 };
@@ -25,12 +24,6 @@ export const data = createSlice({
     loadCurrentGuitarComments: (state, action) => {
       state.currentGuitarComments = action.payload;
     },
-    // loadGuitarsComments: (state, action) => {
-    //   state.guitarsComments.push(action.payload);
-    // },
-    // setGuitarsComments: (state, action) => {
-    //   state.guitarsComments = (action.payload);
-    // },
     setCommentSend: (state, action) => {
       state.isCommentSent = (action.payload);
     },

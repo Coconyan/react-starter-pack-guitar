@@ -14,7 +14,6 @@ const state = {
   guitars: [],
   currentGuitar: null,
   currentGuitarComments: [],
-  guitarsComments: [],
   isCommentSent: false,
   isDataLoaded: false,
 };
@@ -26,7 +25,6 @@ describe('Reducer: data', () => {
         guitars: [],
         currentGuitar: null,
         currentGuitarComments: [],
-        guitarsComments: [],
         isCommentSent: false,
         isDataLoaded: false,
       });
@@ -38,7 +36,6 @@ describe('Reducer: data', () => {
         guitars: guitars,
         currentGuitar: null,
         currentGuitarComments: [],
-        guitarsComments: [],
         isCommentSent: false,
         isDataLoaded: true,
       });
@@ -50,7 +47,6 @@ describe('Reducer: data', () => {
         guitars: [],
         currentGuitar: guitars[0],
         currentGuitarComments: [],
-        guitarsComments: [],
         isCommentSent: false,
         isDataLoaded: false,
       });
@@ -62,7 +58,6 @@ describe('Reducer: data', () => {
         guitars: [],
         currentGuitar: null,
         currentGuitarComments: comments,
-        guitarsComments: [],
         isCommentSent: false,
         isDataLoaded: false,
       });
@@ -74,7 +69,6 @@ describe('Reducer: data', () => {
         guitars: [],
         currentGuitar: null,
         currentGuitarComments: [],
-        guitarsComments: [],
         isCommentSent: true,
         isDataLoaded: false,
       });

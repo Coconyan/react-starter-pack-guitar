@@ -1,18 +1,27 @@
-// import { createFocusTrap } from 'focus-trap';
-import { FormEvent, useState } from 'react';
+import { FocusTrap } from 'focus-trap';
+import {
+  FormEvent,
+  useState
+} from 'react';
 import { useAppDispatch } from '../../hooks';
 import { addNewCommentAction } from '../../store/api-actions';
 import { CommentPost } from '../../types/comment';
-import { existVerticalScroll, getBodyScrollTop, handleBodyLock } from '../../utils';
+import {
+  existVerticalScroll,
+  getBodyScrollTop,
+  handleBodyLock,
+  isEscapeKey
+} from '../../utils';
 
 type PropsType = {
   guitarName: string,
   guitarId: number,
   setModal: (arg0: boolean) => void,
   modal: boolean,
+  modalFocusTrap: FocusTrap | undefined,
 }
 
-function ReviewModal({ guitarName, guitarId, setModal, modal }: PropsType): JSX.Element {
+function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: PropsType): JSX.Element {
   const dispatch = useAppDispatch();
   const [userName, setName] = useState('');
   const [rating, setRating] = useState('');
@@ -20,9 +29,7 @@ function ReviewModal({ guitarName, guitarId, setModal, modal }: PropsType): JSX.
   const [disadvantage, setDisadvantage] = useState('');
   const [comment, setComment] = useState('');
   const body = document.querySelector('body');
-  // const modalFocusTrap = createFocusTrap('.modal');
 
-  // modal && modalFocusTrap?.activate();
   if (body && existVerticalScroll() && modal) {
     body.dataset.scrollY = `${getBodyScrollTop()}`;
     body.classList.add('body-lock');
@@ -32,7 +39,7 @@ function ReviewModal({ guitarName, guitarId, setModal, modal }: PropsType): JSX.
   const onSubmit = (commentData: CommentPost) => {
     dispatch(addNewCommentAction(commentData));
     setModal(false);
-    handleBodyLock(body);
+    handleBodyLock(body, modalFocusTrap);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -59,11 +66,26 @@ function ReviewModal({ guitarName, guitarId, setModal, modal }: PropsType): JSX.
 
   const handleCloseModal = () => {
     setModal(false);
-    handleBodyLock(body);
+    handleBodyLock(body, modalFocusTrap);
   };
 
+  const onEscKeydown = (event: { key?: string; }) => {
+    if (isEscapeKey(event.key)) {
+      setModal(false);
+      document.removeEventListener('keydown', onEscKeydown);
+      body?.classList.remove('body-lock');
+      modalFocusTrap?.deactivate();
+      if (body && existVerticalScroll()) {
+        body?.dataset.scrollY && window.scrollTo(0, +body.dataset.scrollY);
+      }
+    }
+  };
+
+  modal && document.addEventListener('keydown', onEscKeydown);
+  modal && setTimeout(() => modalFocusTrap?.activate(), 50);
+
   return (
-    <div className={`modal ${modal ? 'is-active' : ''} modal--review modal-for-ui-kit`} tabIndex={-1}>
+    <div className={`modal ${modal ? 'is-active' : ''} modal--review`} tabIndex={-1} aria-modal="true">
       <div className="modal__wrapper">
         <div
           className="modal__overlay"
@@ -118,7 +140,7 @@ function ReviewModal({ guitarName, guitarId, setModal, modal }: PropsType): JSX.
           </button>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

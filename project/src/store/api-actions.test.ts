@@ -6,8 +6,18 @@ import { createAPI } from '../services/api';
 import { APIRoute } from '../const';
 import { State } from '../types/state';
 import { makeFakeGuitar } from '../mocks/fake-guitar';
-import { addNewCommentAction, fetchCurrentGuitarAction, fetchCurrentGuitarCommentsAction, fetchGuitarsAction } from './api-actions';
-import { loadCurrentGuitar, loadCurrentGuitarComments, loadGuitars, setCommentSend } from './data/data';
+import {
+  addNewCommentAction,
+  fetchCurrentGuitarAction,
+  fetchCurrentGuitarCommentsAction,
+  fetchGuitarsAction
+} from './api-actions';
+import {
+  loadCurrentGuitar,
+  loadCurrentGuitarComments,
+  loadGuitars,
+  setCommentSend
+} from './data/data';
 import { makeFakeComment } from '../mocks/fake-comment';
 
 describe('Async actions', () => {
@@ -24,7 +34,7 @@ describe('Async actions', () => {
   it('should dispatch Load Guitars when GET /guitars', async () => {
     const mockGuitars = [makeFakeGuitar(), makeFakeGuitar()];
     mockAPI
-      .onGet(APIRoute.Guitars)
+      .onGet(`${APIRoute.Guitars}?_limit=27&_embed=comments`)
       .reply(200, mockGuitars);
 
     const store = mockStore();

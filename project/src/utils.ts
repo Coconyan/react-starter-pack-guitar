@@ -1,3 +1,5 @@
+import { FocusTrap } from 'focus-trap';
+
 type MapType = {
   [param: string]: string,
 }
@@ -36,9 +38,9 @@ export const getBodyScrollTop = (): number => (
   (document.body && document.body.scrollTop)
 );
 
-export const handleBodyLock = (body: HTMLBodyElement | null) => {
+export const handleBodyLock = (body: HTMLBodyElement | null, modalFocusTrap: FocusTrap | undefined) => {
   body?.classList.remove('body-lock');
-  // modalFocusTrap.deactivate();
+  modalFocusTrap?.deactivate();
   if (body && existVerticalScroll()) {
     body?.dataset.scrollY && window.scrollTo(0, +body.dataset.scrollY);
   }

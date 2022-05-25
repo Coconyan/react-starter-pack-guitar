@@ -22,11 +22,12 @@ function CatalogPage(): JSX.Element {
   const navigate = useNavigate();
   const { pageId } = useParams();
   const pageCount = Math.ceil(guitars.length / GUITARS_COUNT_PER_PAGE);
-  const [currentPage] = useState(pageId ? Number(pageId) - 1 : 0);
+  const [currentPage, setCurrentPage] = useState(pageId ? Number(pageId) - 1 : 0);
 
   useEffect(() => {
+    setCurrentPage(pageId ? Number(pageId) - 1 : 0);
     (Number(pageId) > pageCount || (pageId && isNaN(Number(pageId)))) && navigate(AppRoute.NotFound, {replace: true});
-  });
+  }, [navigate, pageCount, pageId]);
 
   return (
     <div className="wrapper">

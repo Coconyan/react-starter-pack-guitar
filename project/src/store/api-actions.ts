@@ -69,23 +69,6 @@ export const fetchCurrentGuitarCommentsAction = createAsyncThunk<void, number, {
   },
 );
 
-// export const fetchCurrentGuitarCommentsCardAction = createAsyncThunk<void, number, {
-//   dispatch: AppDispatch,
-//   state: State,
-//   extra: AxiosInstance
-// }>(
-//   'data/fetchCurrentGuitarCommentsCard',
-//   async (page: number, { dispatch, extra: api }) => {
-//     try {
-//       const { data } = await api.get<Comments>(`${APIRoute.Guitars}?_start=${page * GUITARS_COUNT_PER_PAGE}&_end=${page * GUITARS_COUNT_PER_PAGE + GUITARS_COUNT_PER_PAGE}&_embed=comments`);
-//       dispatch(setGuitarsComments(data));
-//     } catch (error) {
-//       errorHandle(error);
-//     }
-//   },
-// );
-// todo delete all this comments
-
 export const addNewCommentAction = createAsyncThunk<void, CommentPost, {
   dispatch: AppDispatch,
   state: State,

@@ -7,7 +7,9 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { AppRoute } from '../../const';
 import { makeFakeComment } from '../../mocks/fake-comment';
+import { makeFakeGuitar } from '../../mocks/fake-guitar';
 import HistoryRouter from '../history-router/history-router';
+import ProductCard from './product-card';
 
 const mockStore = configureMockStore();
 
@@ -26,10 +28,10 @@ describe('Component: ProductCard', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <h1> Mock product card </h1>
+          <ProductCard guitar={makeFakeGuitar()} />
         </HistoryRouter>
       </Provider>);
 
-    expect(screen.getByText(/Mock product card/i)).toBeInTheDocument();
+    expect(screen.getByText(/Подробнее/i)).toBeInTheDocument();
   });
 });

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 type PropsType = {
   currentPage: number;
   pageCount: number;
@@ -7,7 +9,8 @@ function PaginationList({ currentPage, pageCount }: PropsType): JSX.Element {
   return (
     <ul className="pagination__list">
       {currentPage !== 0 && (
-        <li className="pagination__page pagination__page--next" id="next"><a className="link pagination__page-link" href={`page_${currentPage}`}>Назад</a>
+        <li className="pagination__page pagination__page--next" id="next">
+          <Link className="link pagination__page-link" to={`page_${currentPage}`}>Назад</Link>
         </li>
       )}
       {Array.from({ length: pageCount }, (v, i) => i + 1).map((page) => {
@@ -17,7 +20,7 @@ function PaginationList({ currentPage, pageCount }: PropsType): JSX.Element {
               key={page}
               className="pagination__page pagination__page--active"
             >
-              <a className="link pagination__page-link" href={`page_${page}`}>{page}</a>
+              <Link className="link pagination__page-link" to={`page_${page}`}>{page}</Link>
             </li>
           );
         }
@@ -26,12 +29,13 @@ function PaginationList({ currentPage, pageCount }: PropsType): JSX.Element {
             key={page}
             className="pagination__page"
           >
-            <a className="link pagination__page-link" href={`page_${page}`}>{page}</a>
+            <Link className="link pagination__page-link" to={`page_${page}`}>{page}</Link>
           </li>
         );
       })}
       {currentPage !== pageCount - 1 && (
-        <li className="pagination__page pagination__page--next" id="next"><a className="link pagination__page-link" href={`page_${currentPage + 2}`}>Далее</a>
+        <li className="pagination__page pagination__page--next" id="next">
+          <Link className="link pagination__page-link" to={`page_${currentPage + 2}`}>Далее</Link>
         </li>
       )}
     </ul>
