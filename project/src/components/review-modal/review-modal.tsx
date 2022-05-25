@@ -54,14 +54,14 @@ function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: 
         disadvantage: disadvantage,
         comment: comment,
       });
-    }
 
-    setName('');
-    setRating('');
-    setAdvantage('');
-    setDisadvantage('');
-    setComment('');
-    event.currentTarget.reset();
+      setName('');
+      setRating('');
+      setAdvantage('');
+      setDisadvantage('');
+      setComment('');
+      event.currentTarget.reset();
+    }
   };
 
   const handleCloseModal = () => {
