@@ -42,7 +42,7 @@ function ProductPage(): JSX.Element {
   const [count, setCount] = useState(3);
   const [modal, setModal] = useState(false);
   const location = useLocation();
-  const [descriptionTab, setDesctiptionTab] = useState(location.hash === '#description');
+  const [descriptionTab, setDescriptionTab] = useState(location.hash === '#description');
   const sortedCurrentGuitarComments: Comments = currentGuitarComments.slice();
   const modalFocusTrap = createFocusTrap('.modal');
   const modalFocusSuccessTrap = createFocusTrap('.modal--success');
@@ -90,13 +90,13 @@ function ProductPage(): JSX.Element {
                 <Link
                   className={descriptionTab ? 'button button--black-border button--medium tabs__button' : 'button button--medium tabs__button'}
                   to={`${AppRoute.Product}/${id}#characteristics`}
-                  onClick={() => setDesctiptionTab(false)}
+                  onClick={() => setDescriptionTab(false)}
                 >Характеристики
                 </Link>
                 <Link
                   className={descriptionTab ? 'button button--medium tabs__button' : 'button button--black-border button--medium tabs__button'}
                   to={`${AppRoute.Product}/${id}#description`}
-                  onClick={() => setDesctiptionTab(true)}
+                  onClick={() => setDescriptionTab(true)}
                 >Описание
                 </Link>
                 <div className="tabs__content" id={descriptionTab ? 'description' : 'characteristics'}>
