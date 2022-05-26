@@ -28,6 +28,7 @@ function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: 
   const [advantage, setAdvantage] = useState('');
   const [disadvantage, setDisadvantage] = useState('');
   const [comment, setComment] = useState('');
+  const [validate, setValidate] = useState(false);
   const body = document.querySelector('body');
 
   if (body && existVerticalScroll() && modal) {
@@ -40,10 +41,12 @@ function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: 
     dispatch(addNewCommentAction(commentData));
     setModal(false);
     handleBodyLock(body, modalFocusTrap);
+    setValidate(false);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setValidate(true);
 
     if (userName.length !== 0 && rating.length !== 0 && advantage.length !== 0 && disadvantage.length !== 0 && comment.length !== 0) {
       onSubmit({
@@ -103,7 +106,7 @@ function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: 
               <div className="form-review__name-wrapper">
                 <label className="form-review__label form-review__label--required" htmlFor="user-name">Ваше Имя</label>
                 <input onChange={(event) => setName(event.target.value)} className="form-review__input form-review__input--name" id="user-name" type="text" autoComplete="off" />
-                {userName.length === 0 && (<p className="form-review__warning">Заполните поле</p>)}
+                {(<p className={`form-review__warning ${(userName.length !== 0 || !validate) ? 'visibility-hidden' : ''}`}>Заполните поле</p>)}
               </div>
               <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                 <div className="rate rate--reverse">
@@ -117,19 +120,19 @@ function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: 
                   <label className="rate__label" htmlFor="star-2" title="Плохо" />
                   <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" checked={rating === '1'} id="star-1" name="rate" type="radio" defaultValue={1} />
                   <label className="rate__label" htmlFor="star-1" title="Ужасно" />
-                  {(rating.length === 0) && (<p className="rate__message">Поставьте оценку</p>)}
+                  {(<p className={`rate__message ${(rating.length !== 0 || !validate) ? 'visibility-hidden' : ''}`}>Поставьте оценку</p>)}
                 </div>
               </div>
             </div>
             <label className="form-review__label form-review__label--required" htmlFor="adv">Достоинства</label>
             <input onChange={(event) => setAdvantage(event.target.value)} className="form-review__input" id="adv" type="text" autoComplete="off" />
-            {advantage.length === 0 && (<p className="form-review__warning">Заполните поле</p>)}
+            {(<p className={`form-review__warning ${(advantage.length !== 0 || !validate) ? 'visibility-hidden' : ''}`}>Заполните поле</p>)}
             <label className="form-review__label form-review__label--required" htmlFor="disadv">Недостатки</label>
             <input onChange={(event) => setDisadvantage(event.target.value)} className="form-review__input" id="disadv" type="text" autoComplete="off" />
-            {disadvantage.length === 0 && (<p className="form-review__warning">Заполните поле</p>)}
+            {(<p className={`form-review__warning ${(disadvantage.length !== 0 || !validate) ? 'visibility-hidden' : ''}`}>Заполните поле</p>)}
             <label className="form-review__label form-review__label--required" htmlFor="comment">Комментарий</label>
             <textarea onChange={(event) => setComment(event.target.value)} className="form-review__input form-review__input--textarea" id="comment" rows={10} autoComplete="off" defaultValue={''} />
-            {comment.length === 0 && (<p className="form-review__warning">Заполните поле</p>)}
+            {(<p className={`form-review__warning ${(comment.length !== 0 || !validate) ? 'visibility-hidden' : ''}`}>Заполните поле</p>)}
             <button className="button button--medium-20 form-review__button" type="submit">Отправить отзыв</button>
           </form>
           <button

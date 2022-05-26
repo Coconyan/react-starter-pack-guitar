@@ -3260,6 +3260,10 @@ button,
   position: fixed;
 }
 
+.visibility-hidden {
+  visibility: hidden;
+}
+
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
   .modal--success .modal__content {
     background-image: url("../img/sprite/bg_modal@2x.png");
