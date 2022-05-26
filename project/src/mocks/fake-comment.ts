@@ -5,6 +5,7 @@ import {
 import { Comment } from '../types/comment';
 
 export const makeFakeComment = (): Comment => ({
+  id: datatype.string(10),
   guitarId: datatype.number(200),
   userName: name.title(),
   advantage: datatype.string(10),

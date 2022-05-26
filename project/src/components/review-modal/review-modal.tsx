@@ -107,17 +107,17 @@ function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: 
               </div>
               <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                 <div className="rate rate--reverse">
-                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" id="star-5" data-testid="star-5" name="rate" type="radio" defaultValue={5} />
+                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" checked={rating === '5'} id="star-5" data-testid="star-5" name="rate" type="radio" defaultValue={5} />
                   <label className="rate__label" htmlFor="star-5" title="Отлично" />
-                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" id="star-4" name="rate" type="radio" defaultValue={4} />
+                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" checked={rating === '4'} id="star-4" name="rate" type="radio" defaultValue={4} />
                   <label className="rate__label" htmlFor="star-4" title="Хорошо" />
-                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" id="star-3" name="rate" type="radio" defaultValue={3} />
+                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" checked={rating === '3'} id="star-3" name="rate" type="radio" defaultValue={3} />
                   <label className="rate__label" htmlFor="star-3" title="Нормально" />
-                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" id="star-2" name="rate" type="radio" defaultValue={2} />
+                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" checked={rating === '2'} id="star-2" name="rate" type="radio" defaultValue={2} />
                   <label className="rate__label" htmlFor="star-2" title="Плохо" />
-                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" id="star-1" name="rate" type="radio" defaultValue={1} />
+                  <input onChange={(event) => setRating(event.target.value)} className="visually-hidden" checked={rating === '1'} id="star-1" name="rate" type="radio" defaultValue={1} />
                   <label className="rate__label" htmlFor="star-1" title="Ужасно" />
-                  {rating.length === 0 && (<p className="rate__message">Поставьте оценку</p>)}
+                  {(rating.length === 0) && (<p className="rate__message">Поставьте оценку</p>)}
                 </div>
               </div>
             </div>
