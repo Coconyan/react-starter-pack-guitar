@@ -25,7 +25,7 @@ export const data = createSlice({
       state.currentGuitarComments = action.payload;
     },
     setCommentSend: (state, action) => {
-      state.isCommentSent = (action.payload);
+      state.isCommentSent = action.payload;
     },
   },
 });

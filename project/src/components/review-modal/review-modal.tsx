@@ -3,10 +3,13 @@ import {
   FormEvent,
   useState
 } from 'react';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addNewCommentAction } from '../../store/api-actions';
+import { loadCurrentGuitarComments } from '../../store/data/data';
+import { getCurrentGuitarComments } from '../../store/data/selectors';
 import { CommentPost } from '../../types/comment';
 import {
+  convertCommentPostToComment,
   existVerticalScroll,
   getBodyScrollTop,
   handleBodyLock,
@@ -22,6 +25,7 @@ type PropsType = {
 }
 
 function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: PropsType): JSX.Element {
+  const currentGuitarComments = useAppSelector(getCurrentGuitarComments);
   const dispatch = useAppDispatch();
   const [userName, setName] = useState('');
   const [rating, setRating] = useState('');
@@ -39,6 +43,9 @@ function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: 
 
   const onSubmit = (commentData: CommentPost) => {
     dispatch(addNewCommentAction(commentData));
+    const currentGuitarCommentsWithNewComment = currentGuitarComments.slice();
+    currentGuitarCommentsWithNewComment.unshift(convertCommentPostToComment(commentData));
+    dispatch(loadCurrentGuitarComments(currentGuitarCommentsWithNewComment));
     setModal(false);
     handleBodyLock(body, modalFocusTrap);
     setValidate(false);

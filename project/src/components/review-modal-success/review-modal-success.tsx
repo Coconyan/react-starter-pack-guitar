@@ -3,7 +3,6 @@ import {
   useAppDispatch,
   useAppSelector
 } from '../../hooks';
-import { fetchCurrentGuitarCommentsAction } from '../../store/api-actions';
 import { setCommentSend } from '../../store/data/data';
 import { getCommentSendStatus } from '../../store/data/selectors';
 import {
@@ -31,7 +30,6 @@ function ReviewModalSuccess({ guitarId, modalFocusTrap }: PropsType): JSX.Elemen
 
   const handleModalSuccessClose = () => {
     dispatch(setCommentSend(false));
-    dispatch(fetchCurrentGuitarCommentsAction(guitarId));
     handleBodyLock(body, modalFocusTrap);
   };
 

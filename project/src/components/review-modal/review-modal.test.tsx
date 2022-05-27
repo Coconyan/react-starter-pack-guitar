@@ -52,7 +52,7 @@ describe('Component: ReviewModal', () => {
 
     expect(screen.getByDisplayValue(userName)).toBeInTheDocument();
     expect(screen.getByDisplayValue(advantage)).toBeInTheDocument();
-    expect(screen.queryByText(/Поставьте оценку/i)).not.toBeInTheDocument();
+    expect(screen.getByTestId('star-5')).toBeChecked();
     expect(screen.getByDisplayValue(disadvantage)).toBeInTheDocument();
     expect(screen.getByDisplayValue(reviewText)).toBeInTheDocument();
   });

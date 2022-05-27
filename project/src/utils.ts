@@ -1,4 +1,6 @@
+import { datatype } from 'faker';
 import { FocusTrap } from 'focus-trap';
+import { Comment, CommentPost } from './types/comment';
 
 type MapType = {
   [param: string]: string,
@@ -28,7 +30,6 @@ export const convertToRussianRating = (rate: number) => mapToRussianRating[Math.
 
 export const isEscapeKey = (key: string | undefined) => key === 'Escape';
 
-
 export const existVerticalScroll = () => document.body.offsetHeight > window.innerHeight;
 
 export const getBodyScrollTop = (): number => (
@@ -44,4 +45,11 @@ export const handleBodyLock = (body: HTMLBodyElement | null, modalFocusTrap: Foc
   if (body && existVerticalScroll()) {
     body?.dataset.scrollY && window.scrollTo(0, +body.dataset.scrollY);
   }
+};
+
+export const convertCommentPostToComment = (commentPost: CommentPost): Comment => {
+  const comment: Comment = JSON.parse(JSON.stringify(commentPost));
+  comment.id = datatype.uuid();
+  comment.createAt = new Date().toISOString();
+  return comment;
 };
