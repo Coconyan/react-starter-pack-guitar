@@ -1,9 +1,18 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import {
+  Link,
+  useNavigate
+} from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useAppSelector } from '../../hooks';
+import { getGuitars } from '../../store/data/selectors';
 
 function Header(): JSX.Element {
+  const guitars = useAppSelector(getGuitars);
+  const navigate = useNavigate();
   const location = useLocation();
+  const [searchValue, setSearchValue] = useState('');
 
   return (
     <header className="header" id="header">
@@ -25,18 +34,25 @@ function Header(): JSX.Element {
                 <use xlinkHref="#icon-search" />
               </svg><span className="visually-hidden">Начать поиск</span>
             </button>
-            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" />
+            <input
+              onChange={(event) => setSearchValue(event.target.value)}
+              className="form-search__input"
+              id="search"
+              type="text"
+              autoComplete="off"
+              placeholder="что вы ищите?"
+              value={searchValue}
+            />
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
-          <ul className="form-search__select-list hidden">
-            <li className="form-search__select-item" tabIndex={0}>Четстер Plus</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX2</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX3</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX4</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX5</li>
+          <ul className={`form-search__select-list ${searchValue ? 'list-opened' : 'hidden'}`}>
+            {guitars.map((guitar) =>
+              guitar.name.toLowerCase().includes(searchValue.toLowerCase())
+                ? (<li className="form-search__select-item" tabIndex={0} onClick={() => navigate(`${AppRoute.Product}/${guitar.id}`, {replace: true})}>{guitar.name}</li>)
+                : '',
+            )}
           </ul>
-          <button className="form-search__reset" type="reset" form="form-search">
+          <button onClick={() => setSearchValue('')} className="form-search__reset" type="reset" form="form-search">
             <svg className="form-search__icon" width={14} height={15} aria-hidden="true">
               <use xlinkHref="#icon-close" />
             </svg><span className="visually-hidden">Сбросить поиск</span>
