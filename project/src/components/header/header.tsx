@@ -16,10 +16,10 @@ function Header(): JSX.Element {
 
   return (
     <header className="header" id="header">
-      <div className="container header__wrapper"><Link className="header__logo logo" to={AppRoute.Root}><img className="logo__img" width={70} height={70} src="./img/svg/logo.svg" alt="Логотип" /></Link>
+      <div className="container header__wrapper"><Link className={`header__logo logo ${(location.pathname === AppRoute.Root || location.pathname.includes('page_')) && 'link--current'}`} to={AppRoute.Root}><img className="logo__img" width={70} height={70} src="./img/svg/logo.svg" alt="Логотип" /></Link>
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li><Link className={`link main-nav__link ${location.pathname === AppRoute.Root && 'link--current'}`} to={AppRoute.Root}>Каталог</Link>
+            <li><Link className={`link main-nav__link ${(location.pathname === AppRoute.Root || location.pathname.includes('page_')) && 'link--current'}`} to={AppRoute.Root}>Каталог</Link>
             </li>
             <li><a className="link main-nav__link" href="todo#">Где купить?</a>
             </li>
@@ -46,9 +46,10 @@ function Header(): JSX.Element {
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
           <ul className={`form-search__select-list ${searchValue ? 'list-opened' : 'hidden'}`}>
+            {/* todo search with many words */}
             {guitars.map((guitar) =>
               guitar.name.toLowerCase().includes(searchValue.toLowerCase())
-                ? (<li className="form-search__select-item" tabIndex={0} onClick={() => navigate(`${AppRoute.Product}/${guitar.id}`, {replace: true})}>{guitar.name}</li>)
+                ? (<li key={guitar.id} className="form-search__select-item" tabIndex={0} onClick={() => navigate(`${AppRoute.Product}/${guitar.id}`, {replace: true})}>{guitar.name}</li>)
                 : '',
             )}
           </ul>

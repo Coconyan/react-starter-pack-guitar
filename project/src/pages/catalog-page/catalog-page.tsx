@@ -3,8 +3,10 @@ import {
   useState
 } from 'react';
 import {
+  URLSearchParamsInit,
   useNavigate,
-  useParams
+  useParams,
+  useSearchParams
 } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
@@ -14,20 +16,81 @@ import {
   AppRoute,
   GUITARS_COUNT_PER_PAGE
 } from '../../const';
-import { useAppSelector } from '../../hooks';
-import { getGuitars } from '../../store/data/selectors';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchGuitarsCatalogAction } from '../../store/api-actions';
+import { getCatalogGuitars, getGuitars } from '../../store/data/selectors';
 
 function CatalogPage(): JSX.Element {
+  const dispatch = useAppDispatch();
   const guitars = useAppSelector(getGuitars);
+  const catalogGuitars = useAppSelector(getCatalogGuitars);
   const navigate = useNavigate();
   const { pageId } = useParams();
-  const pageCount = Math.ceil(guitars.length / GUITARS_COUNT_PER_PAGE);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageCount = Math.ceil((catalogGuitars && catalogGuitars?.length !== 0) ? catalogGuitars.length / GUITARS_COUNT_PER_PAGE : guitars.length / GUITARS_COUNT_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(pageId ? Number(pageId) - 1 : 0);
+  const [sortPrice, setSortPrice] = useState(searchParams.get('sort') === 'price');
+  const [sortPopular, setSortPopular] = useState(searchParams.get('sort') === 'rating');
+  const [sortAsc, setSortAsc] = useState(searchParams.get('order') === 'asc');
+  const [sortDesc, setSortDesc] = useState(searchParams.get('order') === 'desc');
 
   useEffect(() => {
     setCurrentPage(pageId ? Number(pageId) - 1 : 0);
     (Number(pageId) > pageCount || (pageId && isNaN(Number(pageId)))) && navigate(AppRoute.NotFound, {replace: true});
-  }, [navigate, pageCount, pageId]);
+    if (sortPrice || sortPopular || sortAsc || sortDesc) {
+      setSearchParams(handleSetSearchParams());
+      dispatch(fetchGuitarsCatalogAction(getQueryString()));
+    }
+  }, [dispatch, navigate, pageCount, pageId, sortAsc, sortDesc, sortPopular, sortPrice]);
+
+  const getQueryString = () => {
+    let query = '';
+    if (sortPrice) {query += '&_sort=price';}
+    if (sortPopular) {query += '&_sort=rating';}
+    if (sortAsc) {query += '&_order=asc';}
+    if (sortDesc) {query += '&_order=desc';}
+
+    return query;
+  };
+
+  const handleSetSearchParams = () => {
+    const searchObject: URLSearchParamsInit = {};
+
+    if (sortPrice) {
+      searchObject.sort = 'price';
+    } else if (sortPopular) {
+      searchObject.sort = 'rating';
+    }
+    if (sortAsc) {
+      searchObject.order = 'asc';
+    } else if (sortDesc) {
+      searchObject.order = 'desc';
+    }
+
+    return searchObject;
+  };
+
+  const handleSetSortPrice = () => {
+    setSortPrice(true);
+    setSortPopular(false);
+  };
+
+  const handleSetSortPopular = () => {
+    setSortPopular(true);
+    setSortPrice(false);
+  };
+
+  const handleSetSortAsc = () => {
+    !searchParams.get('sort') && setSortPrice(true);
+    setSortAsc(true);
+    setSortDesc(false);
+  };
+
+  const handleSetSortDesc = () => {
+    !searchParams.get('sort') && setSortPrice(true);
+    setSortDesc(true);
+    setSortAsc(false);
+  };
 
   return (
     <div className="wrapper">
@@ -96,15 +159,39 @@ function CatalogPage(): JSX.Element {
             <div className="catalog-sort">
               <h2 className="catalog-sort__title">Сортировать:</h2>
               <div className="catalog-sort__type">
-                <button className="catalog-sort__type-button" aria-label="по цене">по цене</button>
-                <button className="catalog-sort__type-button" aria-label="по популярности">по популярности</button>
+                <button
+                  className={`catalog-sort__type-button ${sortPrice && 'catalog-sort__type-button--active'}`}
+                  aria-label="по цене"
+                  onClick={handleSetSortPrice}
+                >по цене
+                </button>
+                <button
+                  className={`catalog-sort__type-button ${sortPopular && 'catalog-sort__type-button--active'}`}
+                  aria-label="по популярности"
+                  onClick={handleSetSortPopular}
+                >по популярности
+                </button>
               </div>
               <div className="catalog-sort__order">
-                <button className="catalog-sort__order-button catalog-sort__order-button--up" aria-label="По возрастанию" />
-                <button className="catalog-sort__order-button catalog-sort__order-button--down" aria-label="По убыванию" />
+                <button
+                  className={`catalog-sort__order-button catalog-sort__order-button--up ${sortAsc && 'catalog-sort__order-button--active'}`}
+                  onClick={handleSetSortAsc}
+                  aria-label="По возрастанию"
+                />
+                <button
+                  className={`catalog-sort__order-button catalog-sort__order-button--down ${sortDesc && 'catalog-sort__order-button--active'}`}
+                  onClick={handleSetSortDesc}
+                  aria-label="По убыванию"
+                />
               </div>
             </div>
-            <ProductCardList guitars={guitars.slice(currentPage * GUITARS_COUNT_PER_PAGE, currentPage * GUITARS_COUNT_PER_PAGE + GUITARS_COUNT_PER_PAGE)} />
+            <ProductCardList
+              guitars={
+                (catalogGuitars && catalogGuitars?.length !== 0 && (sortPrice || sortPopular || sortAsc || sortDesc))
+                  ? catalogGuitars.slice(currentPage * GUITARS_COUNT_PER_PAGE, currentPage * GUITARS_COUNT_PER_PAGE + GUITARS_COUNT_PER_PAGE)
+                  : guitars.slice(currentPage * GUITARS_COUNT_PER_PAGE, currentPage * GUITARS_COUNT_PER_PAGE + GUITARS_COUNT_PER_PAGE)
+              }
+            />
             <div className="pagination page-content__pagination">
               <PaginationList currentPage={currentPage} pageCount={pageCount} />
             </div>

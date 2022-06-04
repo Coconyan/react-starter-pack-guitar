@@ -15,10 +15,12 @@ import {
   State
 } from '../types/state';
 import {
+  loadCatalogGuitars,
   loadCurrentGuitar,
   loadCurrentGuitarComments,
   loadGuitars,
-  setCommentSend
+  setCommentSend,
+  setIsCatalogLoading
 } from './data/data';
 
 export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
@@ -31,6 +33,23 @@ export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
     try {
       const { data } = await api.get<Guitars>(`${APIRoute.Guitars}?_limit=27&_embed=comments`);
       dispatch(loadGuitars(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchGuitarsCatalogAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchGuitarsCatalog',
+  async (query : string, { dispatch, extra: api }) => {
+    try {
+      dispatch(setIsCatalogLoading(true));
+      const { data } = await api.get<Guitars>(`${APIRoute.Guitars}?_limit=27&_embed=comments${query}`);
+      dispatch(loadCatalogGuitars(data));
     } catch (error) {
       errorHandle(error);
     }
