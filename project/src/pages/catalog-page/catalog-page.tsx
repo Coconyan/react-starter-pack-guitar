@@ -177,20 +177,39 @@ function CatalogPage(): JSX.Element {
   };
 
   const handleSetFilterAcoustic = (event: ChangeEvent<HTMLInputElement>) => {
-    setFilterTypeAcoustic(filterTypeAcoustic === event.target.value ? '' : event.target.value);
-    filterTypeUkulele.length === 0 && setFilterStringCountFour('');
+    if (filterTypeAcoustic === event.target.value) {
+      setFilterTypeAcoustic('');
+      (filterTypeUkulele.length !== 0 || filterTypeElectric.length !== 0) && setFilterStringCountTwelve('');
+      if (filterTypeUkulele.length !== 0 && filterTypeElectric.length === 0) {
+        setFilterStringCountSeven('');
+        setFilterStringCountSix('');
+      }
+    } else {
+      setFilterTypeAcoustic(event.target.value);
+    }
+
   };
 
   const handleSetFilterElectric = (event: ChangeEvent<HTMLInputElement>) => {
-    setFilterTypeElectric(filterTypeElectric === event.target.value ? '' : event.target.value);
-    filterTypeAcoustic.length === 0 && setFilterStringCountTwelve('');
+    if (filterTypeElectric === event.target.value) {
+      setFilterTypeElectric('');
+      (filterTypeUkulele.length === 0 && filterTypeAcoustic.length !== 0) && setFilterStringCountFour('');
+      if (filterTypeUkulele.length !== 0 && filterTypeAcoustic.length === 0) {
+        setFilterStringCountSix('');
+        setFilterStringCountSeven('');
+      }
+    } else {
+      setFilterTypeElectric(event.target.value);
+    }
   };
 
   const handleSetFilterUkulele = (event: ChangeEvent<HTMLInputElement>) => {
-    setFilterTypeUkulele(filterTypeUkulele === event.target.value ? '' : event.target.value);
-    filterTypeAcoustic.length === 0 && filterTypeElectric.length === 0 && setFilterStringCountSix('');
-    filterTypeAcoustic.length === 0 && filterTypeElectric.length === 0 && setFilterStringCountSeven('');
-    filterTypeAcoustic.length === 0 && setFilterStringCountTwelve('');
+    if (filterTypeUkulele === event.target.value) {
+      setFilterTypeUkulele('');
+      (filterTypeElectric.length === 0 && filterTypeAcoustic.length !== 0) && setFilterStringCountFour('');
+    } else {
+      setFilterTypeUkulele(event.target.value);
+    }
   };
 
   return (
@@ -244,7 +263,8 @@ function CatalogPage(): JSX.Element {
                 <div className="form-checkbox catalog-filter__block-item">
                   <input
                     onChange={(event) => handleSetFilterAcoustic(event)}
-                    checked={filterTypeAcoustic.length !== 0} defaultValue={'acoustic'}
+                    checked={filterTypeAcoustic.length !== 0}
+                    defaultValue={'acoustic'}
                     className="visually-hidden"
                     type="checkbox"
                     id="acoustic"
@@ -368,6 +388,7 @@ function CatalogPage(): JSX.Element {
                 />
               </div>
             </div>
+            {/* todo если гитар 0, то выдать сообщение типа "по вашему запросу ничего не найдено" */}
             {catalogIsLoading
               ? <h1>Loading...</h1>
               : (
