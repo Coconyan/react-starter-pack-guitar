@@ -6,6 +6,10 @@ type PropsType = {
 }
 
 function PaginationList({ currentPage, pageCount }: PropsType): JSX.Element {
+  if (pageCount === 0) {
+    pageCount = 1;
+  }
+
   return (
     <ul className="pagination__list">
       {currentPage !== 0 && (

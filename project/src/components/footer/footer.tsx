@@ -1,6 +1,7 @@
 function Footer(): JSX.Element {
   return (
     <footer className="footer">
+      {/* todo logo link */}
       <div className="footer__container container"><a className="footer__logo logo" href="todo#"><img className="logo__img" width={70} height={70} src="./img/svg/logo.svg" alt="Логотип" /></a>
         <div className="socials footer__socials">
           <ul className="socials__list">

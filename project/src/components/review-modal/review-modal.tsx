@@ -99,7 +99,7 @@ function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: 
       <div className="modal__wrapper">
         <div
           className="modal__overlay"
-          onClick={() => handleCloseModal()}
+          onClick={handleCloseModal}
           data-close-modal
         />
         <div className="modal__content">
@@ -145,7 +145,7 @@ function ReviewModal({ guitarName, guitarId, setModal, modal, modalFocusTrap }: 
           <button
             className="modal__close-btn button-cross"
             type="button" aria-label="Закрыть"
-            onClick={() => handleCloseModal()}
+            onClick={handleCloseModal}
           ><span className="button-cross__icon" /><span className="modal__close-btn-interactive-area" />
           </button>
         </div>

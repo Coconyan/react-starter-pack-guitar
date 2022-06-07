@@ -7,12 +7,12 @@ import {
 
 export type Data = {
   guitars: Guitars,
-  catalogGuitars?: Guitars, // todo delete "?"
+  catalogGuitars?: Guitars,
   currentGuitar: Guitar | null,
   currentGuitarComments: Comments,
   isCommentSent: boolean,
   isDataLoaded: boolean,
-  isCatalogLoading?: boolean, // todo delete "?"
+  isCatalogLoading?: boolean,
 };
 
 export type State = ReturnType<typeof store.getState>;
