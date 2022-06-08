@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
 import {
   Link,
   useNavigate
@@ -35,7 +36,8 @@ function Header(): JSX.Element {
                 <use xlinkHref="#icon-search" />
               </svg><span className="visually-hidden">Начать поиск</span>
             </button>
-            <input
+            <DebounceInput
+              debounceTimeout={300}
               onChange={(event) => setSearchValue(event.target.value)}
               className="form-search__input"
               id="search"
