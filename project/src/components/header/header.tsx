@@ -13,6 +13,7 @@ function Header(): JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchValue, setSearchValue] = useState('');
+  const searchValues = searchValue.toLowerCase().split(' ');
 
   return (
     <header className="header" id="header">
@@ -47,11 +48,17 @@ function Header(): JSX.Element {
           </form>
           <ul className={`form-search__select-list ${searchValue ? 'list-opened' : 'hidden'}`}>
             {/* todo search with many words */}
-            {guitars.map((guitar) =>
-              guitar.name.toLowerCase().includes(searchValue.toLowerCase())
-                ? (<li key={guitar.id} className="form-search__select-item" tabIndex={0} onClick={() => navigate(`${AppRoute.Product}/${guitar.id}`, {replace: true})}>{guitar.name}</li>)
-                : '',
-            )}
+            {searchValues.length > 1
+              ? guitars.map((guitar) =>
+                searchValues.every((value) => guitar.name.toLowerCase().includes(value))
+                  ? (<li key={guitar.id} className="form-search__select-item" tabIndex={0} onClick={() => navigate(`${AppRoute.Product}/${guitar.id}`, { replace: true })}>{guitar.name}</li>)
+                  : '',
+              )
+              : guitars.map((guitar) =>
+                guitar.name.toLowerCase().includes(searchValue.toLowerCase())
+                  ? (<li key={guitar.id} className="form-search__select-item" tabIndex={0} onClick={() => navigate(`${AppRoute.Product}/${guitar.id}`, { replace: true })}>{guitar.name}</li>)
+                  : '',
+              )}
           </ul>
           <button onClick={() => setSearchValue('')} className="form-search__reset" type="reset" form="form-search">
             <svg className="form-search__icon" width={14} height={15} aria-hidden="true">
