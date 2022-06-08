@@ -47,7 +47,6 @@ function Header(): JSX.Element {
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
           <ul className={`form-search__select-list ${searchValue ? 'list-opened' : 'hidden'}`}>
-            {/* todo search with many words */}
             {searchValues.length > 1
               ? guitars.map((guitar) =>
                 searchValues.every((value) => guitar.name.toLowerCase().includes(value))
