@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 type PropsType = {
   currentPage: number;
@@ -6,8 +7,20 @@ type PropsType = {
 }
 
 function PaginationList({ currentPage, pageCount }: PropsType): JSX.Element {
+  const navigate = useNavigate();
+
+  isNaN(currentPage) && navigate(AppRoute.NotFound, { replace: true });
+
   if (pageCount === 0) {
     pageCount = 1;
+    currentPage = 0;
+  } else if (pageCount <= Number(currentPage)) {
+    currentPage = pageCount;
+    navigate(`page_${currentPage}`, { replace: true });
+  }
+
+  if (pageCount < Number(currentPage) - 1) {
+    navigate(AppRoute.NotFound, { replace: true });
   }
 
   return (

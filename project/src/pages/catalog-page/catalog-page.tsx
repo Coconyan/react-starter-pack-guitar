@@ -109,13 +109,11 @@ function CatalogPage(): JSX.Element {
 
   useEffect(() => {
     setCurrentPage(pageId ? Number(pageId) - 1 : 0);
-    (Number(pageId) > pageCount || (pageId && isNaN(Number(pageId)))) && navigate(AppRoute.NotFound, { replace: true });
     setSearchParams(handleSetSearchParams());
-
-    if (location.search.length !== 0 && !catalogIsLoading && (searchParams || sortPrice || sortPopular || sortAsc || sortDesc || filterPriceMin.length !== 0 || filterPriceMax.length !== 0 || filterTypeAcoustic.length !== 0 || filterTypeElectric.length !== 0 || filterTypeUkulele.length !== 0 || filterStringCountFour.length !== 0 || filterStringCountSix.length !== 0 || filterStringCountSeven.length !== 0 || filterStringCountTwelve.length !== 0)) {
+    if (getQueryString().length !== 0 && !catalogIsLoading) {
       dispatch(fetchGuitarsCatalogAction(getQueryString()));
     }
-  }, [dispatch, navigate, searchParams, pageCount, pageId, sortAsc, sortDesc, sortPopular, sortPrice, filterPriceMax, filterPriceMin, filterStringCountFour, filterStringCountSix, filterStringCountSeven, filterStringCountTwelve, filterTypeAcoustic, filterTypeElectric, filterTypeUkulele]);
+  }, [dispatch, navigate, pageCount, pageId, sortAsc, sortDesc, sortPopular, sortPrice, filterPriceMax, filterPriceMin, filterStringCountFour, filterStringCountSix, filterStringCountSeven, filterStringCountTwelve, filterTypeAcoustic, filterTypeElectric, filterTypeUkulele]);
 
   const handleSetSortPrice = () => {
     setSortPrice(true);
@@ -185,6 +183,7 @@ function CatalogPage(): JSX.Element {
         setFilterStringCountSix('');
       }
     } else {
+      filterTypeUkulele.length === 0 && setFilterStringCountFour('');
       setFilterTypeAcoustic(event.target.value);
     }
 
@@ -199,6 +198,7 @@ function CatalogPage(): JSX.Element {
         setFilterStringCountSeven('');
       }
     } else {
+      filterTypeAcoustic.length === 0 && setFilterStringCountTwelve('');
       setFilterTypeElectric(event.target.value);
     }
   };
@@ -208,6 +208,11 @@ function CatalogPage(): JSX.Element {
       setFilterTypeUkulele('');
       (filterTypeElectric.length === 0 && filterTypeAcoustic.length !== 0) && setFilterStringCountFour('');
     } else {
+      filterTypeAcoustic.length === 0 && setFilterStringCountTwelve('');
+      if (filterTypeAcoustic.length === 0 && filterTypeElectric.length === 0) {
+        setFilterStringCountSeven('');
+        setFilterStringCountSix('');
+      }
       setFilterTypeUkulele(event.target.value);
     }
   };
@@ -388,7 +393,6 @@ function CatalogPage(): JSX.Element {
                 />
               </div>
             </div>
-            {/* todo если гитар 0, то выдать сообщение типа "по вашему запросу ничего не найдено" */}
             {catalogIsLoading
               ? <h1>Loading...</h1>
               : (
@@ -399,7 +403,6 @@ function CatalogPage(): JSX.Element {
                       : guitars.slice(currentPage * GUITARS_COUNT_PER_PAGE, currentPage * GUITARS_COUNT_PER_PAGE + GUITARS_COUNT_PER_PAGE)
                   }
                 />)}
-
             <div className="pagination page-content__pagination">
               <PaginationList currentPage={currentPage} pageCount={pageCount} />
             </div>
