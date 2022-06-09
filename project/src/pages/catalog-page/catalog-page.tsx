@@ -116,11 +116,13 @@ function CatalogPage(): JSX.Element {
   }, [dispatch, navigate, pageCount, pageId, sortAsc, sortDesc, sortPopular, sortPrice, filterPriceMax, filterPriceMin, filterStringCountFour, filterStringCountSix, filterStringCountSeven, filterStringCountTwelve, filterTypeAcoustic, filterTypeElectric, filterTypeUkulele]);
 
   const handleSetSortPrice = () => {
+    !searchParams.get('order') && setSortAsc(true);
     setSortPrice(true);
     setSortPopular(false);
   };
 
   const handleSetSortPopular = () => {
+    !searchParams.get('order') && setSortAsc(true);
     setSortPopular(true);
     setSortPrice(false);
   };
@@ -147,7 +149,7 @@ function CatalogPage(): JSX.Element {
     setFilterStringCountSix('');
     setFilterStringCountSeven('');
     setFilterStringCountTwelve('');
-    setSearchParams('');
+    setSearchParams(handleSetSearchParams());
   };
 
   const handleSetFilterPriceMin = (event: ChangeEvent<HTMLInputElement>) => {
@@ -241,7 +243,7 @@ function CatalogPage(): JSX.Element {
                   <div className="form-input">
                     <label className="visually-hidden">Минимальная цена</label>
                     <DebounceInput
-                      debounceTimeout={500}
+                      debounceTimeout={1000}
                       onChange={(event) => handleSetFilterPriceMin(event)}
                       value={filterPriceMin}
                       type="number"
@@ -254,7 +256,7 @@ function CatalogPage(): JSX.Element {
                   <div className="form-input">
                     <label className="visually-hidden">Максимальная цена</label>
                     <DebounceInput
-                      debounceTimeout={500}
+                      debounceTimeout={1000}
                       onChange={(event) => handleSetFilterPriceMax(event)}
                       value={filterPriceMax}
                       type="number"
