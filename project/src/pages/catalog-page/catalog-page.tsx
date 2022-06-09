@@ -157,6 +157,9 @@ function CatalogPage(): JSX.Element {
     } else if ((Number(event.target.value) > Number(filterPriceMax)) && filterPriceMax.length !== 0) {
       setFilterPriceMin('');
       setFilterPriceMin(filterPriceMax);
+    } else if (Number(event.target.value) > guitarsMaxPrice) {
+      setFilterPriceMin('');
+      setFilterPriceMin(guitarsMaxPrice.toString());
     } else {
       setFilterPriceMin(event.target.value);
     }
