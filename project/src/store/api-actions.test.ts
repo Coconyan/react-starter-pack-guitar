@@ -10,9 +10,11 @@ import {
   addNewCommentAction,
   fetchCurrentGuitarAction,
   fetchCurrentGuitarCommentsAction,
-  fetchGuitarsAction
+  fetchGuitarsAction,
+  fetchGuitarsCatalogAction
 } from './api-actions';
 import {
+  loadCatalogGuitars,
   loadCurrentGuitar,
   loadCurrentGuitarComments,
   loadGuitars,
@@ -44,6 +46,21 @@ describe('Async actions', () => {
     const actions = store.getActions().map(({type}) => type);
 
     expect(actions).toContain(loadGuitars.toString());
+  });
+
+  it('should dispatch Load catalog Guitars when GET /guitars', async () => {
+    const mockGuitars = [makeFakeGuitar(), makeFakeGuitar()];
+    mockAPI
+      .onGet(`${APIRoute.Guitars}?_limit=27&_embed=comments`)
+      .reply(200, mockGuitars);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchGuitarsCatalogAction(''));
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toContain(loadCatalogGuitars.toString());
   });
 
   it('should dispatch Load Guitars when GET /guitars/id', async () => {

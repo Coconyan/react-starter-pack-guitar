@@ -9,31 +9,44 @@ import {
   Routes
 } from 'react-router-dom';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { makeFakeGuitar } from '../../mocks/fake-guitar';
+import { Provider } from 'react-redux';
+
+const mockStore = configureMockStore();
+
+const store = mockStore({
+  DATA: {
+    guitars: [makeFakeGuitar(), makeFakeGuitar()],
+  },
+});
 
 const history = createMemoryHistory();
 
 const fakeApp = (
-  <HistoryRouter history={history}>
-    <Routes>
-      <Route
-        path={AppRoute.Root}
-        element={<h1>Mock Catalog Page</h1>}
-      >
+  <Provider store={store}>
+    <HistoryRouter history={history}>
+      <Routes>
         <Route
-          path={`${AppRoute.Root}page_:pageId`}
+          path={AppRoute.Root}
           element={<h1>Mock Catalog Page</h1>}
+        >
+          <Route
+            path={`${AppRoute.Root}page_:pageId`}
+            element={<h1>Mock Catalog Page</h1>}
+          />
+        </Route>
+        <Route
+          path={`${AppRoute.Product}/:id`}
+          element={<h1>Mock Product Page</h1>}
         />
-      </Route>
-      <Route
-        path={`${AppRoute.Product}/:id`}
-        element={<h1>Mock Product Page</h1>}
-      />
-      <Route
-        path="*"
-        element={<NotFoundPage />}
-      />
-    </Routes>
-  </HistoryRouter>
+        <Route
+          path="*"
+          element={<NotFoundPage />}
+        />
+      </Routes>
+    </HistoryRouter>
+  </Provider>
 );
 
 describe('Application Routing', () => {

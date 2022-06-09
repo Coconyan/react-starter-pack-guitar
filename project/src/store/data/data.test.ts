@@ -5,17 +5,21 @@ import {
   setCommentSend,
   loadCurrentGuitar,
   loadGuitars,
-  data
+  data,
+  loadCatalogGuitars,
+  setIsCatalogLoading
 } from './data';
 
 const guitars = [makeFakeGuitar(), makeFakeGuitar(), makeFakeGuitar()];
 const comments = [makeFakeComment(), makeFakeComment()];
 const state = {
   guitars: [],
+  catalogGuitars: [],
   currentGuitar: null,
   currentGuitarComments: [],
   isCommentSent: false,
   isDataLoaded: false,
+  isCatalogLoading: false,
 };
 
 describe('Reducer: data', () => {
@@ -23,10 +27,12 @@ describe('Reducer: data', () => {
     expect(data.reducer(void 0, { type: 'UNKNOWN_ACTION' }))
       .toEqual({
         guitars: [],
+        catalogGuitars: [],
         currentGuitar: null,
         currentGuitarComments: [],
         isCommentSent: false,
         isDataLoaded: false,
+        isCatalogLoading: false,
       });
   });
 
@@ -38,6 +44,21 @@ describe('Reducer: data', () => {
         currentGuitarComments: [],
         isCommentSent: false,
         isDataLoaded: true,
+        catalogGuitars: [],
+        isCatalogLoading: false,
+      });
+  });
+
+  it('should update catalog guitars by load catalog guitars', () => {
+    expect(data.reducer(state, loadCatalogGuitars(guitars)))
+      .toEqual({
+        guitars: [],
+        currentGuitar: null,
+        currentGuitarComments: [],
+        isCommentSent: false,
+        isDataLoaded: false,
+        catalogGuitars: guitars,
+        isCatalogLoading: false,
       });
   });
 
@@ -49,6 +70,8 @@ describe('Reducer: data', () => {
         currentGuitarComments: [],
         isCommentSent: false,
         isDataLoaded: false,
+        catalogGuitars: [],
+        isCatalogLoading: false,
       });
   });
 
@@ -60,6 +83,8 @@ describe('Reducer: data', () => {
         currentGuitarComments: comments,
         isCommentSent: false,
         isDataLoaded: false,
+        catalogGuitars: [],
+        isCatalogLoading: false,
       });
   });
 
@@ -71,6 +96,21 @@ describe('Reducer: data', () => {
         currentGuitarComments: [],
         isCommentSent: true,
         isDataLoaded: false,
+        catalogGuitars: [],
+        isCatalogLoading: false,
+      });
+  });
+
+  it('should set catalog loading status by set catalog loading', () => {
+    expect(data.reducer(state, setIsCatalogLoading(true)))
+      .toEqual({
+        guitars: [],
+        currentGuitar: null,
+        currentGuitarComments: [],
+        isCommentSent: false,
+        isDataLoaded: false,
+        catalogGuitars: [],
+        isCatalogLoading: true,
       });
   });
 });
