@@ -19,8 +19,11 @@ import {
   loadCurrentGuitar,
   loadCurrentGuitarComments,
   loadGuitars,
+  loadSearchGuitars,
   setCommentSend,
-  setIsCatalogLoading
+  setIsCatalogLoading,
+  setIsSearchLoading,
+  setLastQuery
 } from './data/data';
 
 export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
@@ -48,9 +51,29 @@ export const fetchGuitarsCatalogAction = createAsyncThunk<void, string, {
   async (query : string, { dispatch, extra: api }) => {
     try {
       dispatch(setIsCatalogLoading(true));
+      dispatch(setLastQuery(query));
       const { data } = await api.get<Guitars>(`${APIRoute.Guitars}?_limit=27&_embed=comments${query}`);
       dispatch(loadCatalogGuitars(data));
     } catch (error) {
+      dispatch(setIsCatalogLoading(false));
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchGuitarsSearchAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchGuitarsSearch',
+  async (query : string, { dispatch, extra: api }) => {
+    try {
+      dispatch(setIsSearchLoading(true));
+      const { data } = await api.get<Guitars>(`${APIRoute.Guitars}?name_like=${query}`);
+      dispatch(loadSearchGuitars(data));
+    } catch (error) {
+      dispatch(setIsSearchLoading(false));
       errorHandle(error);
     }
   },

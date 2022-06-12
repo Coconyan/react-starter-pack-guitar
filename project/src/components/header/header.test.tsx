@@ -14,7 +14,7 @@ const mockStore = configureMockStore();
 
 const store = mockStore({
   DATA: {
-    guitars: [makeFakeGuitar(), makeFakeGuitar()],
+    searchGuitars: [makeFakeGuitar(), makeFakeGuitar()],
   },
 });
 

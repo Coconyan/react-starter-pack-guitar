@@ -7,7 +7,6 @@ import { DebounceInput } from 'react-debounce-input';
 import {
   URLSearchParamsInit,
   useLocation,
-  useNavigate,
   useParams,
   useSearchParams
 } from 'react-router-dom';
@@ -27,7 +26,8 @@ import { fetchGuitarsCatalogAction } from '../../store/api-actions';
 import {
   getCatalogGuitars,
   getCatalogLoadingStatus,
-  getGuitars
+  getGuitars,
+  getLastQuery
 } from '../../store/data/selectors';
 
 function CatalogPage(): JSX.Element {
@@ -35,12 +35,11 @@ function CatalogPage(): JSX.Element {
   const guitars = useAppSelector(getGuitars);
   const catalogGuitars = useAppSelector(getCatalogGuitars);
   const catalogIsLoading = useAppSelector(getCatalogLoadingStatus);
-  const navigate = useNavigate();
+  const lastQuery = useAppSelector(getLastQuery);
   const { pageId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
 
-  const [currentPage, setCurrentPage] = useState(pageId ? Number(pageId) - 1 : 0);
   const [sortPrice, setSortPrice] = useState(searchParams.get('sort') === 'price');
   const [sortPopular, setSortPopular] = useState(searchParams.get('sort') === 'rating');
   const [sortAsc, setSortAsc] = useState(searchParams.get('order') === 'asc');
@@ -57,6 +56,8 @@ function CatalogPage(): JSX.Element {
   const [filterStringCountSix, setFilterStringCountSix] = useState(searchParams.get('stringCountSix') || '');
   const [filterStringCountSeven, setFilterStringCountSeven] = useState(searchParams.get('stringCountSeven') || '');
   const [filterStringCountTwelve, setFilterStringCountTwelve] = useState(searchParams.get('stringCountTwelve') || '');
+
+  const [currentPage, setCurrentPage] = useState(pageId ? Number(pageId) - 1 : 0);
   const pageCount = Math.ceil((location.search.length !== 0 && catalogGuitars) ? catalogGuitars.length / GUITARS_COUNT_PER_PAGE : guitars.length / GUITARS_COUNT_PER_PAGE);
 
   const getQueryString = () => {
@@ -110,10 +111,10 @@ function CatalogPage(): JSX.Element {
   useEffect(() => {
     setCurrentPage(pageId ? Number(pageId) - 1 : 0);
     setSearchParams(handleSetSearchParams());
-    if (getQueryString().length !== 0 && !catalogIsLoading) {
+    if (!catalogIsLoading && lastQuery !== getQueryString()) {
       dispatch(fetchGuitarsCatalogAction(getQueryString()));
     }
-  }, [dispatch, navigate, pageCount, pageId, sortAsc, sortDesc, sortPopular, sortPrice, filterPriceMax, filterPriceMin, filterStringCountFour, filterStringCountSix, filterStringCountSeven, filterStringCountTwelve, filterTypeAcoustic, filterTypeElectric, filterTypeUkulele]);
+  }, [dispatch, pageCount, pageId, sortAsc, sortDesc, sortPopular, sortPrice, filterPriceMax, filterPriceMin, filterStringCountFour, filterStringCountSix, filterStringCountSeven, filterStringCountTwelve, filterTypeAcoustic, filterTypeElectric, filterTypeUkulele]);
 
   const handleSetSortPrice = () => {
     !searchParams.get('order') && setSortAsc(true);
@@ -158,7 +159,7 @@ function CatalogPage(): JSX.Element {
       setFilterPriceMin(guitarsMinPrice.toString());
     } else if ((Number(event.target.value) > Number(filterPriceMax)) && filterPriceMax.length !== 0) {
       setFilterPriceMin('');
-      setFilterPriceMin(filterPriceMax);
+      setFilterPriceMin(filterPriceMax.toString());
     } else if (Number(event.target.value) > guitarsMaxPrice) {
       setFilterPriceMin('');
       setFilterPriceMin(guitarsMaxPrice.toString());
@@ -173,7 +174,7 @@ function CatalogPage(): JSX.Element {
       setFilterPriceMax(guitarsMaxPrice.toString());
     } else if (Number(event.target.value) < Number(filterPriceMin)) {
       setFilterPriceMax('');
-      setFilterPriceMax(filterPriceMin);
+      setFilterPriceMax(filterPriceMin.toString());
     } else {
       setFilterPriceMax(event.target.value);
     }

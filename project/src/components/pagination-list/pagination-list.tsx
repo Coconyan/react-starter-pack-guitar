@@ -22,7 +22,7 @@ function PaginationList({ currentPage, pageCount }: PropsType): JSX.Element {
   if (pageCount < Number(currentPage) - 1) {
     navigate(AppRoute.NotFound, { replace: true });
   }
-
+  // todo scroll to top
   return (
     <ul className="pagination__list">
       {currentPage !== 0 && (

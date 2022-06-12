@@ -7,19 +7,26 @@ import {
   loadGuitars,
   data,
   loadCatalogGuitars,
-  setIsCatalogLoading
+  setIsCatalogLoading,
+  setIsSearchLoading,
+  loadSearchGuitars,
+  setLastQuery
 } from './data';
 
 const guitars = [makeFakeGuitar(), makeFakeGuitar(), makeFakeGuitar()];
 const comments = [makeFakeComment(), makeFakeComment()];
+const query = 'query';
 const state = {
   guitars: [],
   catalogGuitars: [],
+  searchGuitars: [],
   currentGuitar: null,
   currentGuitarComments: [],
   isCommentSent: false,
   isDataLoaded: false,
   isCatalogLoading: false,
+  isSearchLoading: false,
+  lastQuery: '',
 };
 
 describe('Reducer: data', () => {
@@ -28,11 +35,14 @@ describe('Reducer: data', () => {
       .toEqual({
         guitars: [],
         catalogGuitars: [],
+        searchGuitars: [],
         currentGuitar: null,
         currentGuitarComments: [],
         isCommentSent: false,
         isDataLoaded: false,
         isCatalogLoading: false,
+        isSearchLoading: false,
+        lastQuery: '',
       });
   });
 
@@ -46,6 +56,9 @@ describe('Reducer: data', () => {
         isDataLoaded: true,
         catalogGuitars: [],
         isCatalogLoading: false,
+        searchGuitars: [],
+        isSearchLoading: false,
+        lastQuery: '',
       });
   });
 
@@ -59,6 +72,9 @@ describe('Reducer: data', () => {
         isDataLoaded: false,
         catalogGuitars: guitars,
         isCatalogLoading: false,
+        searchGuitars: [],
+        isSearchLoading: false,
+        lastQuery: '',
       });
   });
 
@@ -72,6 +88,9 @@ describe('Reducer: data', () => {
         isDataLoaded: false,
         catalogGuitars: [],
         isCatalogLoading: false,
+        searchGuitars: [],
+        isSearchLoading: false,
+        lastQuery: '',
       });
   });
 
@@ -85,6 +104,9 @@ describe('Reducer: data', () => {
         isDataLoaded: false,
         catalogGuitars: [],
         isCatalogLoading: false,
+        searchGuitars: [],
+        isSearchLoading: false,
+        lastQuery: '',
       });
   });
 
@@ -98,6 +120,9 @@ describe('Reducer: data', () => {
         isDataLoaded: false,
         catalogGuitars: [],
         isCatalogLoading: false,
+        searchGuitars: [],
+        isSearchLoading: false,
+        lastQuery: '',
       });
   });
 
@@ -111,6 +136,57 @@ describe('Reducer: data', () => {
         isDataLoaded: false,
         catalogGuitars: [],
         isCatalogLoading: true,
+        searchGuitars: [],
+        isSearchLoading: false,
+        lastQuery: '',
+      });
+  });
+
+  it('should set search loading status by set catalog search', () => {
+    expect(data.reducer(state, setIsSearchLoading(true)))
+      .toEqual({
+        guitars: [],
+        currentGuitar: null,
+        currentGuitarComments: [],
+        isCommentSent: false,
+        isDataLoaded: false,
+        catalogGuitars: [],
+        isCatalogLoading: false,
+        searchGuitars: [],
+        isSearchLoading: true,
+        lastQuery: '',
+      });
+  });
+
+  it('should set search guitars by load search guitars', () => {
+    expect(data.reducer(state, loadSearchGuitars(guitars)))
+      .toEqual({
+        guitars: [],
+        currentGuitar: null,
+        currentGuitarComments: [],
+        isCommentSent: false,
+        isDataLoaded: false,
+        catalogGuitars: [],
+        isCatalogLoading: false,
+        searchGuitars: guitars,
+        isSearchLoading: false,
+        lastQuery: '',
+      });
+  });
+
+  it('should set last query by set last query', () => {
+    expect(data.reducer(state, setLastQuery(query)))
+      .toEqual({
+        guitars: [],
+        currentGuitar: null,
+        currentGuitarComments: [],
+        isCommentSent: false,
+        isDataLoaded: false,
+        catalogGuitars: [],
+        isCatalogLoading: false,
+        searchGuitars: [],
+        isSearchLoading: false,
+        lastQuery: query,
       });
   });
 });

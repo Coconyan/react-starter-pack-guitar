@@ -5,11 +5,14 @@ import { Data } from '../../types/state';
 const initialState: Data = {
   guitars: [],
   catalogGuitars: [],
+  searchGuitars: [],
   currentGuitar: null,
   currentGuitarComments: [],
   isCommentSent: false,
   isDataLoaded: false,
   isCatalogLoading: false,
+  isSearchLoading: false,
+  lastQuery: '',
 };
 
 export const data = createSlice({
@@ -24,6 +27,10 @@ export const data = createSlice({
       state.catalogGuitars = action.payload;
       state.isCatalogLoading = false;
     },
+    loadSearchGuitars: (state, action) => {
+      state.searchGuitars = action.payload;
+      state.isSearchLoading = false;
+    },
     loadCurrentGuitar: (state, action) => {
       state.currentGuitar = action.payload;
     },
@@ -36,7 +43,13 @@ export const data = createSlice({
     setIsCatalogLoading: (state, action) => {
       state.isCatalogLoading = action.payload;
     },
+    setLastQuery: (state, action) => {
+      state.lastQuery = action.payload;
+    },
+    setIsSearchLoading: (state, action) => {
+      state.isSearchLoading = action.payload;
+    },
   },
 });
 
-export const { loadGuitars, loadCatalogGuitars, loadCurrentGuitar, loadCurrentGuitarComments, setCommentSend, setIsCatalogLoading } = data.actions;
+export const { loadGuitars, loadCatalogGuitars, loadSearchGuitars, loadCurrentGuitar, loadCurrentGuitarComments, setCommentSend, setIsCatalogLoading, setLastQuery, setIsSearchLoading } = data.actions;

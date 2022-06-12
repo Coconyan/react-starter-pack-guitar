@@ -11,13 +11,15 @@ import {
   fetchCurrentGuitarAction,
   fetchCurrentGuitarCommentsAction,
   fetchGuitarsAction,
-  fetchGuitarsCatalogAction
+  fetchGuitarsCatalogAction,
+  fetchGuitarsSearchAction
 } from './api-actions';
 import {
   loadCatalogGuitars,
   loadCurrentGuitar,
   loadCurrentGuitarComments,
   loadGuitars,
+  loadSearchGuitars,
   setCommentSend
 } from './data/data';
 import { makeFakeComment } from '../mocks/fake-comment';
@@ -61,6 +63,21 @@ describe('Async actions', () => {
     const actions = store.getActions().map(({type}) => type);
 
     expect(actions).toContain(loadCatalogGuitars.toString());
+  });
+
+  it('should dispatch search Guitars when GET /guitars?name_like=', async () => {
+    const mockGuitars = [makeFakeGuitar(), makeFakeGuitar()];
+    mockAPI
+      .onGet(`${APIRoute.Guitars}?name_like=`)
+      .reply(200, mockGuitars);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchGuitarsSearchAction(''));
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toContain(loadSearchGuitars.toString());
   });
 
   it('should dispatch Load Guitars when GET /guitars/id', async () => {
