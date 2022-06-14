@@ -7,7 +7,7 @@ import {
 
 export type Data = {
   guitars: Guitars,
-  catalogGuitars?: Guitars,
+  catalogGuitars: Guitars,
   searchGuitars?: Guitars,
   currentGuitar: Guitar | null,
   currentGuitarComments: Comments,

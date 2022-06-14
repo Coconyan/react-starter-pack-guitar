@@ -3,10 +3,7 @@ import {
   useState
 } from 'react';
 import { DebounceInput } from 'react-debounce-input';
-import {
-  Link,
-  useNavigate
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import {
@@ -23,7 +20,6 @@ function Header(): JSX.Element {
   const dispatch = useAppDispatch();
   const searchGuitars = useAppSelector(getSearchGuitars);
   const searchIsLoading = useAppSelector(getSearchLoadingStatus);
-  const navigate = useNavigate();
   const location = useLocation();
   const [searchValue, setSearchValue] = useState('');
 
@@ -73,11 +69,12 @@ function Header(): JSX.Element {
                   <li
                     key={guitar.id}
                     className="form-search__select-item"
-                    tabIndex={0}
-                    onClick={() => navigate(`${AppRoute.Product}/${guitar.id}`, { replace: true })}
                   >
-                    {guitar.name}
-                  </li>))}
+                    <Link className="link" to={`${AppRoute.Product}/${guitar.id}`}>
+                      {guitar.name}
+                    </Link>
+                  </li>
+                ))}
           </ul>
           <button onClick={() => setSearchValue('')} className="form-search__reset" type="reset" form="form-search">
             <svg className="form-search__icon" width={14} height={15} aria-hidden="true">
