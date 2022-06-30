@@ -4,6 +4,7 @@ import {
   useState
 } from 'react';
 import { DebounceInput } from 'react-debounce-input';
+import { Link } from 'react-router-dom';
 import {
   URLSearchParamsInit,
   useLocation,
@@ -234,9 +235,9 @@ function CatalogPage(): JSX.Element {
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <ul className="breadcrumbs page-content__breadcrumbs">
-            <li className="breadcrumbs__item"><a className="link" href={AppRoute.Root}>Главная</a>
+            <li className="breadcrumbs__item"><Link className="link" to={AppRoute.Root}>Главная</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link" href={AppRoute.Root}>Каталог</a>
+            <li className="breadcrumbs__item"><Link className="link" to={AppRoute.Root}>Каталог</Link>
             </li>
           </ul>
           <div className="catalog">
