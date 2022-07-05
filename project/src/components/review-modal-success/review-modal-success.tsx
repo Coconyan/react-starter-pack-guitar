@@ -1,4 +1,5 @@
-import { FocusTrap } from 'focus-trap';
+// import { createFocusTrap } from 'focus-trap';
+import TrapFocus from '@mui/base/TrapFocus';
 import {
   useAppDispatch,
   useAppSelector
@@ -14,13 +15,13 @@ import {
 
 type PropsType = {
   guitarId: number;
-  modalFocusTrap: FocusTrap | undefined,
 }
 
-function ReviewModalSuccess({ guitarId, modalFocusTrap }: PropsType): JSX.Element {
+function ReviewModalSuccess({ guitarId }: PropsType): JSX.Element {
   const dispatch = useAppDispatch();
   const commentSendStatus = useAppSelector(getCommentSendStatus);
   const body = document.querySelector('body');
+  // const modalFocusTrap = createFocusTrap('.modal--success');
 
   if (body && existVerticalScroll() && commentSendStatus) {
     body.dataset.scrollY = `${getBodyScrollTop()}`;
@@ -30,7 +31,7 @@ function ReviewModalSuccess({ guitarId, modalFocusTrap }: PropsType): JSX.Elemen
 
   const handleModalSuccessClose = () => {
     dispatch(setCommentSend(false));
-    handleBodyLock(body, modalFocusTrap);
+    handleBodyLock(body);
   };
 
   const onEscKeydown = (event: { key?: string; }) => {
@@ -41,35 +42,37 @@ function ReviewModalSuccess({ guitarId, modalFocusTrap }: PropsType): JSX.Elemen
   };
 
   commentSendStatus && document.addEventListener('keydown', onEscKeydown);
-  commentSendStatus && setTimeout(() => modalFocusTrap?.activate(), 50);
+  // commentSendStatus && setTimeout(() => modalFocusTrap?.activate(), 50);
 
   return (
-    <div className={`modal ${commentSendStatus ? 'is-active' : ''} modal--success`} tabIndex={-1} aria-modal="true" id='modal--success'>
-      <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal onClick={() => handleModalSuccessClose()} />
-        <div className="modal__content">
-          <svg className="modal__icon" width={26} height={20} aria-hidden="true">
-            <use xlinkHref="#icon-success" />
-          </svg>
-          <p className="modal__message">Спасибо за ваш отзыв!</p>
-          <div className="modal__button-container modal__button-container--review">
+    <TrapFocus open >
+      <div className={`modal ${commentSendStatus ? 'is-active' : ''} modal--success`} tabIndex={-1} aria-modal="true" id='modal--success'>
+        <div className="modal__wrapper">
+          <div className="modal__overlay" data-close-modal onClick={() => handleModalSuccessClose()} />
+          <div className="modal__content">
+            <svg className="modal__icon" width={26} height={20} aria-hidden="true">
+              <use xlinkHref="#icon-success" />
+            </svg>
+            <p className="modal__message">Спасибо за ваш отзыв!</p>
+            <div className="modal__button-container modal__button-container--review">
+              <button
+                className="button button--small modal__button modal__button--review"
+                onClick={() => handleModalSuccessClose()}
+              >К покупкам!
+              </button>
+            </div>
             <button
-              className="button button--small modal__button modal__button--review"
+              className="modal__close-btn button-cross"
+              type="button"
+              aria-label="Закрыть"
               onClick={() => handleModalSuccessClose()}
-            >К покупкам!
+            >
+              <span className="button-cross__icon" /><span className="modal__close-btn-interactive-area" />
             </button>
           </div>
-          <button
-            className="modal__close-btn button-cross"
-            type="button"
-            aria-label="Закрыть"
-            onClick={() => handleModalSuccessClose()}
-          >
-            <span className="button-cross__icon" /><span className="modal__close-btn-interactive-area" />
-          </button>
         </div>
       </div>
-    </div>
+    </TrapFocus>
 
   );
 }

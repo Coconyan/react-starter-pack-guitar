@@ -1058,11 +1058,12 @@ button,
   margin-bottom: 10px;
 }
 
-.modal__img {
+.modal__content .modal__info .modal__img {
   display: block;
 
   width: 55px;
   height: 137px;
+  margin: 0;
 
   -o-object-fit: contain;
      object-fit: contain;
@@ -1097,7 +1098,7 @@ button,
 .modal__price {
   font-size: 20px;
   font-weight: bold;
-  line-height: 15px;
+  line-height: 21px;
 
   letter-spacing: 0.05em;
 }

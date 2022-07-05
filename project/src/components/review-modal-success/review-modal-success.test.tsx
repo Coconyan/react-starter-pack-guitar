@@ -28,7 +28,7 @@ describe('Component: ReviewModalSuccess', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewModalSuccess guitarId={guitarId} modalFocusTrap={undefined} />
+          <ReviewModalSuccess guitarId={guitarId} />
         </HistoryRouter>
       </Provider>);
 

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { createFocusTrap } from 'focus-trap';
+// import { createFocusTrap } from 'focus-trap';
 import {
   useEffect,
   useState
@@ -9,6 +9,8 @@ import {
   useLocation
 } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import CartAddModalSuccess from '../../components/cart-add-modal-success/cart-add-modal-success';
+import CartAddModal from '../../components/cart-add-modal/cart-add-modal';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import Rating from '../../components/rating/rating';
@@ -41,11 +43,13 @@ function ProductPage(): JSX.Element {
   const { id } = useParams();
   const [count, setCount] = useState(3);
   const [modal, setModal] = useState(false);
+  const [modalCart, setModalCart] = useState(false);
+  const [modalCartSuccess, setModalCartSuccess] = useState(false);
   const location = useLocation();
   const [descriptionTab, setDescriptionTab] = useState(location.hash === '#description');
   const sortedCurrentGuitarComments: Comments = currentGuitarComments.slice();
-  const modalFocusTrap = createFocusTrap('.modal');
-  const modalFocusSuccessTrap = createFocusTrap('.modal--success');
+
+  // const modalFocusSuccessTrap = createFocusTrap('.modal--success');
 
   if (currentGuitarComments.length !== 0) {
     sortedCurrentGuitarComments.sort((commentPrev, commentNext) => dayjs(commentNext.createAt).unix() - dayjs(commentPrev.createAt).unix());
@@ -122,14 +126,16 @@ function ProductPage(): JSX.Element {
             </div>
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">{currentGuitar.price} ₽</p><a className="button button--red button--big product-container__button" href="#todo">Добавить в корзину</a>
+              <p className="product-container__price-info product-container__price-info--value">{currentGuitar.price} ₽</p><Link className="button button--red button--big product-container__button" to={`${AppRoute.Product}/${id}`} onClick={() => setModalCart(true)}>Добавить в корзину</Link>
             </div>
           </div>
           <section className="reviews">
             <h3 className="reviews__title title title--bigger">Отзывы</h3>
             <button className="button button--red-border button--big reviews__sumbit-button" onClick={() => setModal(true)}>Оставить отзыв</button>
-            {<ReviewModal guitarName={currentGuitar.name} guitarId={currentGuitar.id} setModal={setModal} modal={modal} modalFocusTrap={modalFocusTrap} />}
-            {<ReviewModalSuccess guitarId={currentGuitar.id} modalFocusTrap={modalFocusSuccessTrap} />}
+            {modal && <ReviewModal guitarName={currentGuitar.name} guitarId={currentGuitar.id} setModal={setModal} modal={modal} />}
+            {<ReviewModalSuccess guitarId={currentGuitar.id} />}
+            {<CartAddModal guitar={currentGuitar} setModal={setModalCart} modal={modalCart} setModalSuccess={setModalCartSuccess} />}
+            {<CartAddModalSuccess setModal={setModalCartSuccess} modal={modalCartSuccess} />}
             <ReviewsList reviews={sortedCurrentGuitarComments.slice(0, count)} />
             {count < sortedCurrentGuitarComments.length
               ? (

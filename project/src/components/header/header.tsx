@@ -11,6 +11,7 @@ import {
   useAppSelector
 } from '../../hooks';
 import { fetchGuitarsSearchAction } from '../../store/api-actions';
+import { getCartGuitars } from '../../store/data copy/selectors';
 import {
   getSearchGuitars,
   getSearchLoadingStatus
@@ -20,6 +21,7 @@ function Header(): JSX.Element {
   const dispatch = useAppDispatch();
   const searchGuitars = useAppSelector(getSearchGuitars);
   const searchIsLoading = useAppSelector(getSearchLoadingStatus);
+  const cartGuitars = useAppSelector(getCartGuitars);
   const location = useLocation();
   const [searchValue, setSearchValue] = useState('');
 
@@ -85,7 +87,7 @@ function Header(): JSX.Element {
         <Link className="header__cart-link" to={AppRoute.Cart} aria-label="Корзина">
           <svg className="header__cart-icon" width={14} height={14} aria-hidden="true">
             <use xlinkHref="#icon-basket" />
-          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">2</span>
+          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">{cartGuitars.length}</span>
         </Link>
       </div>
     </header>

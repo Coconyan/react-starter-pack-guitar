@@ -39,11 +39,13 @@ export const getBodyScrollTop = (): number => (
   (document.body && document.body.scrollTop)
 );
 
-export const handleBodyLock = (body: HTMLBodyElement | null, modalFocusTrap: FocusTrap | undefined) => {
+export const handleBodyLock = (body: HTMLBodyElement | null, modalFocusTrap?: FocusTrap | undefined) => {
   body?.classList.remove('body-lock');
   modalFocusTrap?.deactivate();
   if (body && existVerticalScroll()) {
-    body?.dataset.scrollY && window.scrollTo(0, +body.dataset.scrollY);
+    body.dataset.scrollY && window.scrollTo(0, +body.dataset.scrollY); // todo fix scroll
+    // eslint-disable-next-line no-console
+    console.log(body.dataset.scrollY);
   }
 };
 

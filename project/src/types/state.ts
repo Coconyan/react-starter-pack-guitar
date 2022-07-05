@@ -18,6 +18,10 @@ export type Data = {
   lastQuery?: string,
 };
 
+export type Cart = {
+  cartGuitars: Guitars,
+};
+
 export type State = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;

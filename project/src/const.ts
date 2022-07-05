@@ -12,6 +12,7 @@ export enum APIRoute {
 
 export enum NameSpace {
   data = 'DATA',
+  cart = 'CART',
 }
 
 export const GUITARS_COUNT_PER_PAGE = 9;
