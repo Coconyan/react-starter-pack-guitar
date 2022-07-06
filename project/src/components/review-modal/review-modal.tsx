@@ -1,4 +1,3 @@
-// import { createFocusTrap } from 'focus-trap';
 import TrapFocus from '@mui/base/TrapFocus';
 import {
   FormEvent,
@@ -34,7 +33,6 @@ function ReviewModal({ guitarName, guitarId, setModal, modal }: PropsType): JSX.
   const [comment, setComment] = useState('');
   const [validate, setValidate] = useState(false);
   const body = document.querySelector('body');
-  // const modalFocusTrap = createFocusTrap('.modal');
 
   if (body && existVerticalScroll() && modal) {
     body.dataset.scrollY = `${getBodyScrollTop()}`;
@@ -90,7 +88,6 @@ function ReviewModal({ guitarName, guitarId, setModal, modal }: PropsType): JSX.
   };
 
   modal && document.addEventListener('keydown', onEscKeydown);
-  // modal && setTimeout(() => modalFocusTrap?.activate(), 50);
 
   return (
     <TrapFocus open>

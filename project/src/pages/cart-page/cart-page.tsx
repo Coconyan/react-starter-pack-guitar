@@ -7,15 +7,13 @@ import { useAppSelector } from '../../hooks';
 import { getCartGuitars } from '../../store/data copy/selectors';
 
 function CartPage(): JSX.Element {
-
   const cartGuitars = useAppSelector(getCartGuitars);
+
   let totalPrice = 0;
   cartGuitars.forEach((guitar) => {
-    totalPrice += guitar.price;
+    guitar.cartCount ? totalPrice += guitar.price * guitar.cartCount : totalPrice += guitar.price;
   });
   // todo refactoring sum
-  // eslint-disable-next-line no-console
-  console.log(cartGuitars);
 
   return (
     <div className="wrapper">

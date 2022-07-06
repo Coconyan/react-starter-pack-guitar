@@ -1,6 +1,7 @@
 import { datatype } from 'faker';
 import { FocusTrap } from 'focus-trap';
 import { Comment, CommentPost } from './types/comment';
+import { Guitar, Guitars } from './types/guitar';
 
 type MapType = {
   [param: string]: string,
@@ -54,4 +55,63 @@ export const convertCommentPostToComment = (commentPost: CommentPost): Comment =
   comment.id = datatype.uuid();
   comment.createAt = new Date().toISOString();
   return comment;
+};
+
+export const cartGuitarIncrement = (cartGuitars: Guitars, currentGuitar: Guitar, setVisibleCount?: (arg0: number) => void) => {
+  const index = cartGuitars.findIndex((cartGuitar) => cartGuitar.id === currentGuitar.id);
+  const cartGuitarWithNewOne = JSON.parse(JSON.stringify(cartGuitars));
+
+  if (index >= 0) {
+    const cartCount = cartGuitarWithNewOne[index].cartCount;
+    if (cartCount && cartCount < 99) {
+      cartGuitarWithNewOne[index].cartCount = cartCount + 1;
+      setVisibleCount && setVisibleCount(cartCount + 1);
+    } else {
+      setVisibleCount && setVisibleCount(cartCount);
+    }
+  } else {
+    const guitarWithCount = JSON.parse(JSON.stringify(currentGuitar));
+    guitarWithCount.cartCount = 1;
+    cartGuitarWithNewOne.push(guitarWithCount);
+  }
+
+  return cartGuitarWithNewOne;
+};
+
+export const cartGuitarDecrement = (cartGuitars: Guitars, currentGuitar: Guitar, setVisibleCount?: (arg0: number) => void) => {
+  const index = cartGuitars.findIndex((cartGuitar) => cartGuitar.id === currentGuitar.id);
+  const cartGuitarWithNewOne = JSON.parse(JSON.stringify(cartGuitars));
+
+  if (index >= 0) {
+    const cartCount = cartGuitarWithNewOne[index].cartCount;
+    if (cartCount > 1) {
+      cartGuitarWithNewOne[index].cartCount = cartCount - 1;
+      setVisibleCount && setVisibleCount(cartCount - 1);
+    } else {
+      setVisibleCount && setVisibleCount(cartCount);
+    }
+  }
+
+  return cartGuitarWithNewOne;
+};
+
+export const cartGuitarInputCount = (cartGuitars: Guitars, currentGuitar: Guitar, inputCount: number, setVisibleCount: (arg0: number) => void) => {
+  const index = cartGuitars.findIndex((cartGuitar) => cartGuitar.id === currentGuitar.id);
+  const cartGuitarWithNewOne = JSON.parse(JSON.stringify(cartGuitars));
+
+  if (index >= 0) {
+    const cartCount = cartGuitarWithNewOne[index].cartCount;
+    if (cartCount && (inputCount > 0 && inputCount < 100)) {
+      cartGuitarWithNewOne[index].cartCount = inputCount;
+      setVisibleCount(inputCount);
+    } else if (inputCount <= 0) {
+      cartGuitarWithNewOne[index].cartCount = 1;
+      setVisibleCount(1);
+    } else {
+      cartGuitarWithNewOne[index].cartCount = 99;
+      setVisibleCount(99);
+    }
+  }
+
+  return cartGuitarWithNewOne;
 };

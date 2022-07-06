@@ -1,4 +1,3 @@
-// import { createFocusTrap } from 'focus-trap';
 import TrapFocus from '@mui/base/TrapFocus';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
@@ -17,7 +16,6 @@ type PropsType = {
 function CartAddModalSuccess({ setModal, modal }: PropsType): JSX.Element {
   const navigate = useNavigate();
   const body = document.querySelector('body');
-  // const modalFocusTrap = createFocusTrap('#modal--success');
 
   if (body && existVerticalScroll() && modal) {
     body.dataset.scrollY = `${getBodyScrollTop()}`;
@@ -38,7 +36,6 @@ function CartAddModalSuccess({ setModal, modal }: PropsType): JSX.Element {
   };
 
   modal && document.addEventListener('keydown', onEscKeydown);
-  // modal && setTimeout(() => modalFocusTrap?.activate(), 50);
 
   return (
     <TrapFocus open>

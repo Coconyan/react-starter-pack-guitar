@@ -1,4 +1,6 @@
 import TrapFocus from '@mui/base/TrapFocus';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import {
   useAppDispatch,
   useAppSelector
@@ -7,7 +9,6 @@ import { loadCartGuitars } from '../../store/data copy/cart';
 import { getCartGuitars } from '../../store/data copy/selectors';
 import { Guitar } from '../../types/guitar';
 import {
-  cartGuitarIncrement,
   convertToRussianGuitarType,
   existVerticalScroll,
   getBodyScrollTop,
@@ -19,13 +20,14 @@ type PropsType = {
   guitar: Guitar;
   setModal: (arg0: boolean) => void,
   modal: boolean;
-  setModalSuccess: (arg0: boolean) => void,
 }
 
-function CartAddModal({ guitar, setModal, modal, setModalSuccess }: PropsType): JSX.Element {
+function CartDeleteModal({ guitar, setModal, modal }: PropsType): JSX.Element {
   const dispatch = useAppDispatch();
   const cartGuitars = useAppSelector(getCartGuitars);
+  const navigate = useNavigate();
   const body = document.querySelector('body');
+  const indexGuitar = cartGuitars.findIndex((cartGuitar) => cartGuitar.id === guitar.id);
 
   if (body && existVerticalScroll() && modal) {
     body.dataset.scrollY = `${getBodyScrollTop()}`;
@@ -41,19 +43,17 @@ function CartAddModal({ guitar, setModal, modal, setModalSuccess }: PropsType): 
     }
   };
 
-  const onSubmit = () => {
-    dispatch(loadCartGuitars(cartGuitarIncrement(cartGuitars, guitar)));
-    setModal(false);
-    setModalSuccess(true);
-    handleBodyLock(body);
-    document.removeEventListener('keydown', onEscKeydown);
-  };
-
-
   const handleCloseModal = () => {
     setModal(false);
     handleBodyLock(body);
     document.removeEventListener('keydown', onEscKeydown);
+  };
+
+  const handleDeleteGuitar = () => {
+    const cartGuitarWithoutOne = JSON.parse(JSON.stringify(cartGuitars));
+    cartGuitarWithoutOne.splice(indexGuitar, 1);
+    dispatch(loadCartGuitars(cartGuitarWithoutOne));
+    handleCloseModal();
   };
 
   modal && document.addEventListener('keydown', onEscKeydown);
@@ -64,7 +64,7 @@ function CartAddModal({ guitar, setModal, modal, setModalSuccess }: PropsType): 
         <div className="modal__wrapper">
           <div className="modal__overlay" data-close-modal onClick={handleCloseModal} />
           <div className="modal__content">
-            <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
+            <h2 className="modal__header title title--medium title--red">Удалить этот товар?</h2>
             <div className="modal__info"><img className="modal__img" src={guitar.previewImg} srcSet={`${guitar.previewImg.slice(0, -4)}@2x.jpg 2x`} width={67} height={137} alt="Честер bass" />
               <div className="modal__info-wrapper">
                 <h3 className="modal__product-name title title--little title--uppercase">{guitar.name}</h3>
@@ -75,9 +75,14 @@ function CartAddModal({ guitar, setModal, modal, setModalSuccess }: PropsType): 
             </div>
             <div className="modal__button-container">
               <button
-                className="button button--red button--big modal__button modal__button--add"
-                onClick={() => onSubmit()}
-              >Добавить в корзину
+                className="button button--small modal__button"
+                onClick={() => handleDeleteGuitar()}
+              >Удалить товар
+              </button>
+              <button
+                className="button button--black-border button--small modal__button modal__button--right"
+                onClick={() => { handleCloseModal(); navigate(AppRoute.Root, { replace: true }); }}
+              >Продолжить покупки
               </button>
             </div>
             <button
@@ -95,4 +100,4 @@ function CartAddModal({ guitar, setModal, modal, setModalSuccess }: PropsType): 
   );
 }
 
-export default CartAddModal;
+export default CartDeleteModal;

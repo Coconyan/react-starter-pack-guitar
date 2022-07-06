@@ -10,7 +10,8 @@ export type Guitar = {
   stringCount: number,
   rating: number,
   price: number,
-  comments?: Comments
+  comments?: Comments,
+  cartCount?: number,
 };
 
 export type Guitars = Guitar[];
