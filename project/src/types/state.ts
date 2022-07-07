@@ -1,3 +1,4 @@
+import { PromoCode } from '../const';
 import { store } from '../store';
 import { Comments } from './comment';
 import {
@@ -20,6 +21,7 @@ export type Data = {
 
 export type Cart = {
   cartGuitars: Guitars,
+  promoCode: PromoCode | null,
 };
 
 export type State = ReturnType<typeof store.getState>;

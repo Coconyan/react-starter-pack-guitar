@@ -68,7 +68,6 @@ function CartItem({guitar}: PropsType): JSX.Element {
         </button>
       </div>
       <div className="cart-item__price-total">{guitar.cartCount ? guitar.price * guitar.cartCount : guitar.price} ₽</div>
-      {/* todo total price */}
       {deleteModal && <CartDeleteModal guitar={guitar} setModal={setDeleteModal} modal={deleteModal} />}
     </div>
   );

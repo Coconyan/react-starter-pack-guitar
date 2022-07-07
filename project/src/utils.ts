@@ -45,8 +45,6 @@ export const handleBodyLock = (body: HTMLBodyElement | null, modalFocusTrap?: Fo
   modalFocusTrap?.deactivate();
   if (body && existVerticalScroll()) {
     body.dataset.scrollY && window.scrollTo(0, +body.dataset.scrollY); // todo fix scroll
-    // eslint-disable-next-line no-console
-    console.log(body.dataset.scrollY);
   }
 };
 

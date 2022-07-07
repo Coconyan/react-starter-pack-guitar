@@ -21,3 +21,15 @@ export enum HTTP_CODE {
   BAD_REQUEST = 400,
   NOT_FOUND = 404,
 }
+
+export enum PromoCode {
+  Light = 'light-333',
+  Medium = 'medium-444',
+  Height = 'height-555',
+}
+
+export enum PromoCodeDiscount {
+  Light = 0.95,
+  Medium = 0.9,
+  Height = 0.85,
+}

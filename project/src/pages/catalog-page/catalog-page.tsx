@@ -46,12 +46,12 @@ function CatalogPage(): JSX.Element {
   const [sortAsc, setSortAsc] = useState(searchParams.get('order') === 'asc');
   const [sortDesc, setSortDesc] = useState(searchParams.get('order') === 'desc');
 
-  const guitarsMinPrice = location.search.length === 0
-    ? Math.min(...guitars.map((guitar) => guitar.price))
-    : Math.min(...catalogGuitars.map((guitar) => guitar.price));
-  const guitarsMaxPrice = location.search.length === 0
-    ? Math.max(...guitars.map((guitar) => guitar.price))
-    : Math.max(...catalogGuitars.map((guitar) => guitar.price));
+  const guitarsMinPrice = (catalogGuitars.length !== 0)
+    ? Math.min(...catalogGuitars.map((guitar) => guitar.price))
+    : Math.min(...guitars.map((guitar) => guitar.price));
+  const guitarsMaxPrice = (catalogGuitars.length !== 0)
+    ? Math.max(...catalogGuitars.map((guitar) => guitar.price))
+    : Math.max(...guitars.map((guitar) => guitar.price));
   const [filterPriceMin, setFilterPriceMin] = useState(searchParams.get('priceMin') || '');
   const [filterPriceMax, setFilterPriceMax] = useState(searchParams.get('priceMax') || '');
   const [filterTypeAcoustic, setFilterTypeAcoustic] = useState(searchParams.get('typeAcoustic') || '');
@@ -169,6 +169,7 @@ function CatalogPage(): JSX.Element {
       setFilterPriceMin('');
       setFilterPriceMin(guitarsMaxPrice.toString());
     } else {
+      setFilterPriceMin('');
       setFilterPriceMin(event.target.value);
     }
   };
@@ -181,6 +182,7 @@ function CatalogPage(): JSX.Element {
       setFilterPriceMax('');
       setFilterPriceMax(filterPriceMin.toString());
     } else {
+      setFilterPriceMin('');
       setFilterPriceMax(event.target.value);
     }
   };
