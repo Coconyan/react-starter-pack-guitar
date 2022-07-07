@@ -5,10 +5,10 @@ import {
 } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
+import HistoryRouter from '../../components/history-router/history-router';
 import { AppRoute } from '../../const';
 import { makeFakeGuitar } from '../../mocks/fake-guitar';
-import HistoryRouter from '../history-router/history-router';
-import Header from './header';
+import CartPage from './cart-page';
 
 const mockStore = configureMockStore();
 
@@ -17,25 +17,26 @@ const store = mockStore({
     searchGuitars: [makeFakeGuitar(), makeFakeGuitar()],
   },
   CART: {
-    cartGuitars: [makeFakeGuitar(), makeFakeGuitar()],
+    cartGuitars: [makeFakeGuitar()],
   },
 });
 
 const history = createMemoryHistory();
 
-describe('Component: Header', () => {
+describe('Component: Cart add modal', () => {
   it('should render correctly', () => {
-    history.push(AppRoute.Root);
+    history.push(AppRoute.Cart);
 
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Header />
+          <CartPage />
         </HistoryRouter>
       </Provider>);
 
-    expect(screen.getByText(/Где купить/i)).toBeInTheDocument();
-    expect(screen.getByText(/О компании/i)).toBeInTheDocument();
-    expect(screen.getByText(/Каталог/i)).toBeInTheDocument();
+    expect(screen.getByText(/Промокод на скидку/i)).toBeInTheDocument();
+    expect(screen.getByText(/Всего/i)).toBeInTheDocument();
+    expect(screen.getByText(/Скидка/i)).toBeInTheDocument();
+    expect(screen.getByText(/К оплате/i)).toBeInTheDocument();
   });
 });

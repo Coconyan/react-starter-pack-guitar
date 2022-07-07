@@ -1,12 +1,25 @@
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState
+} from 'react';
 import { Link } from 'react-router-dom';
 import CartItem from '../../components/cart-item/cart-item';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
-import { AppRoute, PromoCode, PromoCodeDiscount } from '../../const';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setPromoCode } from '../../store/data copy/cart';
-import { getCartGuitars, getPromoCode } from '../../store/data copy/selectors';
+import {
+  AppRoute,
+  PromoCode,
+  PromoCodeDiscount
+} from '../../const';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../hooks';
+import { setPromoCode } from '../../store/cart/cart';
+import {
+  getCartGuitars,
+  getPromoCode
+} from '../../store/cart/selectors';
 
 function CartPage(): JSX.Element {
   const dispatch = useAppDispatch();

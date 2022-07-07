@@ -1,9 +1,16 @@
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loadCartGuitars } from '../../store/data copy/cart';
-import { getCartGuitars } from '../../store/data copy/selectors';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../hooks';
+import { loadCartGuitars } from '../../store/cart/cart';
+import { getCartGuitars } from '../../store/cart/selectors';
 import { Guitar } from '../../types/guitar';
-import { cartGuitarDecrement, cartGuitarIncrement, cartGuitarInputCount } from '../../utils';
+import {
+  cartGuitarDecrement,
+  cartGuitarIncrement,
+  cartGuitarInputCount
+} from '../../utils';
 import CartDeleteModal from '../cart-delete-modal/cart-delete-modal';
 
 type PropsType = {

@@ -11,7 +11,7 @@ import {
   useAppSelector
 } from '../../hooks';
 import { fetchGuitarsSearchAction } from '../../store/api-actions';
-import { getCartGuitars } from '../../store/data copy/selectors';
+import { getCartGuitars } from '../../store/cart/selectors';
 import {
   getSearchGuitars,
   getSearchLoadingStatus

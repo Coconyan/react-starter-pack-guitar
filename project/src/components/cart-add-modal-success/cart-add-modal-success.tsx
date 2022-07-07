@@ -61,7 +61,9 @@ function CartAddModalSuccess({ setModal, modal }: PropsType): JSX.Element {
             </div>
             <button
               className="modal__close-btn button-cross"
-              type="button" aria-label="Закрыть"
+              type="button"
+              aria-label="Закрыть"
+              data-testid="close-button"
               onClick={handleCloseModal}
             >
               <span className="button-cross__icon" /><span className="modal__close-btn-interactive-area" />

@@ -6,35 +6,34 @@ import {
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { AppRoute } from '../../const';
-import { makeFakeComment } from '../../mocks/fake-comment';
 import { makeFakeGuitar } from '../../mocks/fake-guitar';
 import HistoryRouter from '../history-router/history-router';
-import ProductCard from './product-card';
+import CartItem from './cart-item';
 
 const mockStore = configureMockStore();
 
 const store = mockStore({
-  DATA: {
-    guitarsComments: [[makeFakeComment(), makeFakeComment()]],
-  },
   CART: {
-    cartGuitars: [makeFakeGuitar(), makeFakeGuitar()],
+    cartGuitars: [makeFakeGuitar()],
   },
 });
 
+const guitar = makeFakeGuitar();
+
 const history = createMemoryHistory();
 
-describe('Component: ProductCard', () => {
-  it('should render ProductCard correctly', () => {
-    history.push(AppRoute.Root);
+describe('Component: Cart item', () => {
+  it('should render correctly', () => {
+    history.push(AppRoute.Cart);
 
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ProductCard guitar={makeFakeGuitar()} />
+          <CartItem guitar={guitar} />
         </HistoryRouter>
       </Provider>);
 
-    expect(screen.getByText(/Подробнее/i)).toBeInTheDocument();
+    expect(screen.getByText(/Артикул/i)).toBeInTheDocument();
+    expect(screen.getByText(/струнная/i)).toBeInTheDocument();
   });
 });

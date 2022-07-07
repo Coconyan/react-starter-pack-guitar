@@ -3,8 +3,8 @@ import {
   useAppDispatch,
   useAppSelector
 } from '../../hooks';
-import { loadCartGuitars } from '../../store/data copy/cart';
-import { getCartGuitars } from '../../store/data copy/selectors';
+import { loadCartGuitars } from '../../store/cart/cart';
+import { getCartGuitars } from '../../store/cart/selectors';
 import { Guitar } from '../../types/guitar';
 import {
   cartGuitarIncrement,
@@ -84,6 +84,7 @@ function CartAddModal({ guitar, setModal, modal, setModalSuccess }: PropsType): 
               className="modal__close-btn button-cross"
               type="button"
               aria-label="Закрыть"
+              data-testid="close-button"
               onClick={handleCloseModal}
             ><span className="button-cross__icon" /><span className="modal__close-btn-interactive-area" />
             </button>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
-import { getCartGuitars } from '../../store/data copy/selectors';
+import { getCartGuitars } from '../../store/cart/selectors';
 import { Guitar } from '../../types/guitar';
 import { convertToRussianRating } from '../../utils';
 import CartAddModalSuccess from '../cart-add-modal-success/cart-add-modal-success';

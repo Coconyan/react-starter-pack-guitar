@@ -5,8 +5,8 @@ import {
   useAppDispatch,
   useAppSelector
 } from '../../hooks';
-import { loadCartGuitars } from '../../store/data copy/cart';
-import { getCartGuitars } from '../../store/data copy/selectors';
+import { loadCartGuitars } from '../../store/cart/cart';
+import { getCartGuitars } from '../../store/cart/selectors';
 import { Guitar } from '../../types/guitar';
 import {
   convertToRussianGuitarType,
@@ -90,6 +90,7 @@ function CartDeleteModal({ guitar, setModal, modal }: PropsType): JSX.Element {
               type="button"
               aria-label="Закрыть"
               onClick={handleCloseModal}
+              data-testid="close-button"
             ><span className="button-cross__icon" /><span className="modal__close-btn-interactive-area" />
             </button>
           </div>

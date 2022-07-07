@@ -19,6 +19,9 @@ const store = mockStore({
   DATA: {
     guitars: [makeFakeGuitar(), makeFakeGuitar()],
   },
+  CART: {
+    cartGuitars: [makeFakeGuitar(), makeFakeGuitar()],
+  },
 });
 
 const history = createMemoryHistory();

@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { NameSpace } from '../const';
-import { cart } from './data copy/cart';
+import { cart } from './cart/cart';
 import { data } from './data/data';
 
 export const rootReducer = combineReducers({
