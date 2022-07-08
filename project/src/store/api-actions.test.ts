@@ -3,7 +3,7 @@ import thunk, { ThunkDispatch } from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createAPI } from '../services/api';
-import { APIRoute } from '../const';
+import { APIRoute, PromoCode } from '../const';
 import { State } from '../types/state';
 import { makeFakeGuitar } from '../mocks/fake-guitar';
 import {
@@ -12,7 +12,8 @@ import {
   fetchCurrentGuitarCommentsAction,
   fetchGuitarsAction,
   fetchGuitarsCatalogAction,
-  fetchGuitarsSearchAction
+  fetchGuitarsSearchAction,
+  fetchPromoCodeDiscount
 } from './api-actions';
 import {
   loadCatalogGuitars,
@@ -23,6 +24,7 @@ import {
   setCommentSend
 } from './data/data';
 import { makeFakeComment } from '../mocks/fake-comment';
+import { setDiscount } from './cart/cart';
 
 describe('Async actions', () => {
   const api = createAPI();
@@ -123,6 +125,21 @@ describe('Async actions', () => {
     const actions = store.getActions().map(({type}) => type);
 
     expect(actions).toContain(setCommentSend.toString());
+  });
+
+  it('should dispatch setDiscount when POST /coupons', async () => {
+    const mockPromo = PromoCode.Light;
+    mockAPI
+      .onPost(`${APIRoute.Coupons}`)
+      .reply(200, []);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchPromoCodeDiscount(mockPromo));
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toContain(setDiscount.toString());
   });
 });
 

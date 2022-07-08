@@ -8,16 +8,17 @@ import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import {
   AppRoute,
-  PromoCode,
-  PromoCodeDiscount
+  PromoCode
 } from '../../const';
 import {
   useAppDispatch,
   useAppSelector
 } from '../../hooks';
+import { fetchPromoCodeDiscount } from '../../store/api-actions';
 import { setPromoCode } from '../../store/cart/cart';
 import {
   getCartGuitars,
+  getDiscount,
   getPromoCode
 } from '../../store/cart/selectors';
 
@@ -25,6 +26,7 @@ function CartPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const cartGuitars = useAppSelector(getCartGuitars);
   const promoCode = useAppSelector(getPromoCode);
+  const discount = useAppSelector(getDiscount);
   const [promoValidateSuccess, setPromoValidateSuccess] = useState(false);
   const [promoValidateError, setPromoValidateError] = useState(false);
   const [promoInput, setPromoInput] = useState('');
@@ -37,46 +39,34 @@ function CartPage(): JSX.Element {
 
   useEffect(() => {
     getPromoStatus();
-  }, [cartGuitars]);
+  }, [cartGuitars, discount]);
 
   const getPromoStatus = () => {
+    let correctPromo = '';
+
     if (promoInput.length > 0) {
-      switch (promoInput.trim().toLowerCase()) {
-        case PromoCode.Light:
-          setTotalPriceWithPromo(PromoCodeDiscount.Light * totalPrice);
-          setPromoValidateSuccess(true);
-          setPromoValidateError(false);
-          break;
-        case PromoCode.Medium:
-          setTotalPriceWithPromo(PromoCodeDiscount.Medium * totalPrice);
-          setPromoValidateSuccess(true);
-          setPromoValidateError(false);
-          break;
-        case PromoCode.Height:
-          setTotalPriceWithPromo(PromoCodeDiscount.Height * totalPrice);
-          setPromoValidateSuccess(true);
-          setPromoValidateError(false);
-          break;
-        default:
-          setTotalPriceWithPromo(totalPrice);
-          setPromoValidateSuccess(false);
-          setPromoValidateError(true);
-          break;
-      }
+      correctPromo = promoInput.trim().toLowerCase();
     } else if (promoCode && promoCode.length > 0) {
-      switch (promoCode) {
+      correctPromo = promoCode;
+    }
+
+    if (correctPromo && correctPromo.length > 0) {
+      switch (correctPromo) {
         case PromoCode.Light:
-          setTotalPriceWithPromo(0.95 * totalPrice);
+          dispatch(fetchPromoCodeDiscount(correctPromo));
+          setTotalPriceWithPromo((1 - (discount/100)) * totalPrice);
           setPromoValidateSuccess(true);
           setPromoValidateError(false);
           break;
         case PromoCode.Medium:
-          setTotalPriceWithPromo(0.9 * totalPrice);
+          dispatch(fetchPromoCodeDiscount(correctPromo));
+          setTotalPriceWithPromo((1 - (discount/100)) * totalPrice);
           setPromoValidateSuccess(true);
           setPromoValidateError(false);
           break;
         case PromoCode.Height:
-          setTotalPriceWithPromo(0.85 * totalPrice);
+          dispatch(fetchPromoCodeDiscount(correctPromo));
+          setTotalPriceWithPromo((1 - (discount/100)) * totalPrice);
           setPromoValidateSuccess(true);
           setPromoValidateError(false);
           break;

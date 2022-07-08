@@ -5,6 +5,7 @@ import { Cart } from '../../types/state';
 const initialState: Cart = {
   cartGuitars: [],
   promoCode: null,
+  discount: 0,
 };
 
 export const cart = createSlice({
@@ -17,7 +18,10 @@ export const cart = createSlice({
     setPromoCode: (state, action) => {
       state.promoCode = action.payload;
     },
+    setDiscount: (state, action) => {
+      state.discount = action.payload;
+    },
   },
 });
 
-export const { loadCartGuitars, setPromoCode } = cart.actions;
+export const { loadCartGuitars, setPromoCode, setDiscount } = cart.actions;

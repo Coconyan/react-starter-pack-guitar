@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { APIRoute } from '../const';
+import { APIRoute, PromoCode } from '../const';
 import { errorHandle } from '../services/error-handle';
 import {
   CommentPost,
@@ -14,6 +14,7 @@ import {
   AppDispatch,
   State
 } from '../types/state';
+import { setDiscount } from './cart/cart';
 import {
   loadCatalogGuitars,
   loadCurrentGuitar,
@@ -48,7 +49,7 @@ export const fetchGuitarsCatalogAction = createAsyncThunk<void, string, {
   extra: AxiosInstance
 }>(
   'data/fetchGuitarsCatalog',
-  async (query : string, { dispatch, extra: api }) => {
+  async (query: string, { dispatch, extra: api }) => {
     try {
       dispatch(setIsCatalogLoading(true));
       dispatch(setLastQuery(query));
@@ -67,7 +68,7 @@ export const fetchGuitarsSearchAction = createAsyncThunk<void, string, {
   extra: AxiosInstance
 }>(
   'data/fetchGuitarsSearch',
-  async (query : string, { dispatch, extra: api }) => {
+  async (query: string, { dispatch, extra: api }) => {
     try {
       dispatch(setIsSearchLoading(true));
       const { data } = await api.get<Guitars>(`${APIRoute.Guitars}?name_like=${query}`);
@@ -121,6 +122,22 @@ export const addNewCommentAction = createAsyncThunk<void, CommentPost, {
     try {
       await api.post<CommentPost>(APIRoute.Comments, { guitarId, userName, rating, advantage, disadvantage, comment });
       dispatch(setCommentSend(true));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchPromoCodeDiscount = createAsyncThunk<void, PromoCode, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchPromoCodeDiscount',
+  async (coupon: PromoCode, { dispatch, extra: api }) => {
+    try {
+      const { data } = await api.post<PromoCode>(APIRoute.Coupons, { coupon });
+      dispatch(setDiscount(data));
     } catch (error) {
       errorHandle(error);
     }

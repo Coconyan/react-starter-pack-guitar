@@ -8,6 +8,7 @@ export enum AppRoute {
 export enum APIRoute {
   Guitars = '/guitars',
   Comments = '/comments',
+  Coupons = '/coupons'
 }
 
 export enum NameSpace {
@@ -26,10 +27,4 @@ export enum PromoCode {
   Light = 'light-333',
   Medium = 'medium-444',
   Height = 'height-555',
-}
-
-export enum PromoCodeDiscount {
-  Light = 0.95,
-  Medium = 0.9,
-  Height = 0.85,
 }

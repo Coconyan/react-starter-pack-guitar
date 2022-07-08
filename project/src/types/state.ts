@@ -22,6 +22,7 @@ export type Data = {
 export type Cart = {
   cartGuitars: Guitars,
   promoCode: PromoCode | null,
+  discount: number,
 };
 
 export type State = ReturnType<typeof store.getState>;
