@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-// import { createFocusTrap } from 'focus-trap';
 import {
   useEffect,
   useState
@@ -48,8 +47,6 @@ function ProductPage(): JSX.Element {
   const location = useLocation();
   const [descriptionTab, setDescriptionTab] = useState(location.hash === '#description');
   const sortedCurrentGuitarComments: Comments = currentGuitarComments.slice();
-
-  // const modalFocusSuccessTrap = createFocusTrap('.modal--success');
 
   if (currentGuitarComments.length !== 0) {
     sortedCurrentGuitarComments.sort((commentPrev, commentNext) => dayjs(commentNext.createAt).unix() - dayjs(commentPrev.createAt).unix());
