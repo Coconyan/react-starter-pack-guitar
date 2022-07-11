@@ -1,7 +1,13 @@
 import { datatype } from 'faker';
 import { FocusTrap } from 'focus-trap';
-import { Comment, CommentPost } from './types/comment';
-import { Guitar, Guitars } from './types/guitar';
+import {
+  Comment,
+  CommentPost
+} from './types/comment';
+import {
+  Guitar,
+  Guitars
+} from './types/guitar';
 
 type MapType = {
   [param: string]: string,
@@ -113,3 +119,5 @@ export const cartGuitarInputCount = (cartGuitars: Guitars, currentGuitar: Guitar
 
   return cartGuitarWithNewOne;
 };
+
+export const numberWithSpaces = (number: number) => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

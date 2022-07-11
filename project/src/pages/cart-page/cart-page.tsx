@@ -21,6 +21,7 @@ import {
   getDiscount,
   getPromoCode
 } from '../../store/cart/selectors';
+import { numberWithSpaces } from '../../utils';
 
 function CartPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -133,15 +134,14 @@ function CartPage(): JSX.Element {
                 </form>
               </div>
               <div className="cart__total-info">
-                <p className="cart__total-item"><span className="cart__total-value-name">Всего:</span><span className="cart__total-value">{totalPrice} ₽</span></p>
-                <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span><span className={`cart__total-value ${promoValidateSuccess && 'cart__total-value--bonus'}`}>- {totalPrice - totalPriceWithPromo} ₽</span></p>
-                <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">{totalPriceWithPromo} ₽</span></p>
+                <p className="cart__total-item"><span className="cart__total-value-name">Всего:</span><span className="cart__total-value">{numberWithSpaces(totalPrice)} ₽</span></p>
+                <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span><span className={`cart__total-value ${promoValidateSuccess && 'cart__total-value--bonus'}`}>{promoValidateSuccess && '- '}{totalPrice - totalPriceWithPromo} ₽</span></p>
+                <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">{numberWithSpaces(totalPriceWithPromo)} ₽</span></p>
                 <button className="button button--red button--big cart__order-button">Оформить заказ</button>
               </div>
             </div>
           </div>
         </div>
-
       </main>
       <Footer />
     </div>
