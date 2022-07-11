@@ -61,7 +61,7 @@ function CartItem({ guitar }: PropsType): JSX.Element {
           className="quantity__button"
           aria-label="Уменьшить количество"
           onClick={() => {
-            currentGuitarCount === 1
+            guitar.cartCount === 1
               ? setDeleteModal(true)
               : dispatch(loadCartGuitars(cartGuitarDecrement(cartGuitars, guitar, setCurrentGuitarCount)));
           }}
